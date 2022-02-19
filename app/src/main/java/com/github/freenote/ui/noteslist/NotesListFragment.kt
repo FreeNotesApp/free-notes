@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.github.freenote.R
 import com.github.freenote.databinding.FragmentNotesListBinding
 import com.github.freenote.domain.NoteDbEntity
 import com.github.freenote.ui.ScreenState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class NotesListFragment : Fragment() {
+class NotesListFragment : Fragment(R.layout.fragment_notes_list) {
 
     private val binding: FragmentNotesListBinding by viewBinding(FragmentNotesListBinding::bind)
     private val vm: NotesListViewModel by viewModel()
