@@ -12,7 +12,7 @@ interface NoteDao {
     @Query("DELETE FROM note")
     fun clear()
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun put(note: NoteDbEntity)
 
     @Delete
