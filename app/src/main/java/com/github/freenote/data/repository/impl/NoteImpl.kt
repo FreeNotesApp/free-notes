@@ -6,8 +6,9 @@ import com.github.freenote.data.repository.NoteRepo
 
 class NoteImpl(private val noteDao: NoteDao) : NoteRepo {
 
-    override val notes: List<NoteDbEntity> =
-        noteDao.getNotesDb()
+    override fun getNotes(): List<NoteDbEntity> {
+        return noteDao.getNotesDb()
+    }
 
     override fun put(note: NoteDbEntity) {
         noteDao.put(note)
