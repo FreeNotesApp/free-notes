@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">FreeNote</string>
+    <string name="name_note">Название заметки</string>
+    <string name="desc">Опсание заметки</string>
+    <string name="btn_add">+</string>
+    <string name="save_button">Сохранить</string>
+    <string name="change_font_size">Изменить шрифт</string>
+    <string name="font_size_hint">Размер шрифта</string>
 </resources>

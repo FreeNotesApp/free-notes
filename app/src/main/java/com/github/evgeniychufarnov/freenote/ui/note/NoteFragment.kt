@@ -5,7 +5,7 @@ import com.github.evgeniychufarnov.freenote.ui.AppState
 import com.github.evgeniychufarnov.freenote.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class NoteFragment : BaseFragment(R.layout.fragment_note) {
+class NoteFragment : BaseFragment(R.layout.fragment_note_list) {
 
     private val viewModel: NoteViewModel by viewModel()
 
