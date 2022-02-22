@@ -1,5 +1,6 @@
 package com.github.freenote.data
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.github.freenote.domain.NoteDbEntity
 
