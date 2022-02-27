@@ -2,6 +2,7 @@ package com.github.freenote
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import com.github.freenote.databinding.ActivityMainBinding
 import com.github.freenote.ui.noteslist.NotesListFragment
 
@@ -13,41 +14,36 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (savedInstanceState == null)
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.activity_main, NotesListFragment())
-                .commit()
-        navigationShits()
+        if (savedInstanceState == null) {
+            navigateTo(NotesListFragment())
+        }
+
+        setBottomNavigation()
     }
 
-    private fun navigationShits() {
+    private fun setBottomNavigation() {
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.bottom_view_note -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container_view, NotesListFragment())
-                        .commitAllowingStateLoss()
+                    navigateTo(NotesListFragment())
                     true
                 }
                 R.id.bottom_view_date_note -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container_view, NotesListFragment())
-                        .commitAllowingStateLoss()
+                    navigateTo(NotesListFragment())
                     true
                 }
                 R.id.bottom_view_settings -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container_view, NotesListFragment())
-                        .commitAllowingStateLoss()
+                    navigateTo(NotesListFragment())
                     true
                 }
-                else -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container_view, NotesListFragment())
-                        .commitAllowingStateLoss()
-                    true
-                }
+                else -> false
             }
         }
+    }
+
+    private fun navigateTo(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(binding.fragmentContainerView.id, fragment)
+            .commit()
     }
 }
