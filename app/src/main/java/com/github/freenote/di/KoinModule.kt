@@ -7,7 +7,10 @@ import com.github.freenote.data.repository.impl.RepositoryImpl
 import com.github.freenote.data.repository.Repository
 import com.github.freenote.data.repository.impl.FakeNoteRepo
 import com.github.freenote.data.repository.impl.NoteImpl
+import com.github.freenote.ui.note.NoteViewModel
+import com.github.freenote.ui.notelistdate.NoteDateListViewModel
 import com.github.freenote.ui.noteslist.NotesListViewModel
+import com.github.freenote.ui.settings.SettingsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -19,6 +22,9 @@ val viewModelModule = module {
     single { Room.databaseBuilder(get(), NoteDb::class.java, DATABASE).build() }
     single { get<NoteDb>().noteDao() }
     single<NoteRepo> { NoteImpl(get()) }
-    //viewModel { NotesListViewModel(get()) }
-    viewModel { NotesListViewModel(FakeNoteRepo()) }
+    viewModel { NotesListViewModel(get()) }
+    viewModel { NoteViewModel(get()) }
+    viewModel { NoteDateListViewModel(get()) }
+    viewModel { SettingsViewModel(get()) }
+    //viewModel { NotesListViewModel(FakeNoteRepo()) }
 }

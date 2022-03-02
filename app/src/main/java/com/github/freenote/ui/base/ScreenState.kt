@@ -1,4 +1,4 @@
-package com.github.freenote.ui
+package com.github.freenote.ui.base
 
 sealed  class  ScreenState<out T> {
     data class Success<out T>(val value: T) : ScreenState<T>()
