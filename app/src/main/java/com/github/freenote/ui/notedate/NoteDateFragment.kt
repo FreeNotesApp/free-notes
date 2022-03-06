@@ -1,27 +1,25 @@
-package com.github.freenote.ui.noteslist
+package com.github.freenote.ui.notedate
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.github.freenote.R
-import com.github.freenote.databinding.FragmentNotesListBinding
+import com.github.freenote.databinding.FragmentNoteBinding
+import com.github.freenote.databinding.FragmentNoteDateBinding
 import com.github.freenote.domain.NoteDbEntity
 import com.github.freenote.ui.base.ScreenState
+import com.github.freenote.ui.note.NoteViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class NotesListFragment : Fragment(R.layout.fragment_notes_list) {
 
-    private val binding: FragmentNotesListBinding by viewBinding(FragmentNotesListBinding::bind)
-    private val vm: NotesListViewModel by viewModel()
+class NoteDateFragment : Fragment(R.layout.fragment_note_date) {
 
-    private lateinit var adapter: NotesAdapter
+    private val binding: FragmentNoteDateBinding by viewBinding(FragmentNoteDateBinding::bind)
+    private val vm: NoteDateViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        adapter = NotesAdapter(vm::onNoteClicked)
-        binding.fragNotesListRvNotes.adapter = adapter
 
         vm.notes.observe(viewLifecycleOwner) {
             renderData(it)
@@ -29,15 +27,16 @@ class NotesListFragment : Fragment(R.layout.fragment_notes_list) {
 
         vm.noteClickedEvent.observe(viewLifecycleOwner) {
             if (it != null) {
+                // todo open node screen
                 vm.onNoteClickedFinished()
             }
         }
     }
 
-    private fun renderData(data: ScreenState<List<NoteDbEntity>>) {
+    private fun renderData(data: ScreenState<NoteDbEntity>) {
         when (data) {
             is ScreenState.Success -> {
-                adapter.submitList(data.value)
+
             }
             is ScreenState.Loading -> {
                 // todo loading state
