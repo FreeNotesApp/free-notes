@@ -26,7 +26,7 @@ class NotesListFragment : Fragment(R.layout.fragment_notes_list) {
         binding.fragNotesListRvNotes.adapter = adapter
 
         vm.notes.observe(viewLifecycleOwner) {
-            renderData(it)
+            adapter.submitList(it)
         }
 
         vm.noteClickedEvent.observe(viewLifecycleOwner) {
@@ -44,21 +44,6 @@ class NotesListFragment : Fragment(R.layout.fragment_notes_list) {
                 ?.add(R.id.activity_main, NoteFragment())
                 ?.addToBackStack("")
                 ?.commit()
-        }
-    }
-
-    private fun renderData(data: ScreenState<LiveData<List<NoteDbEntity>>>) {
-        when (data) {
-            is ScreenState.Success -> {
-                // тут ошибка не пойму почемууууу
-                adapter.submitList(data.value)
-            }
-            is ScreenState.Loading -> {
-                // todo loading state
-            }
-            is ScreenState.Error -> {
-                // todo error state
-            }
         }
     }
 }
