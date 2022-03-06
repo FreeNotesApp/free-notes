@@ -1,18 +1,13 @@
 package com.github.freenote
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.appcompat.widget.SearchView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import com.github.freenote.databinding.ActivityMainBinding
-import com.github.freenote.ui.notelistdate.NoteDateListFragment
-import com.github.freenote.ui.noteslist.NotesListFragment
-import com.github.freenote.ui.settings.SettingsFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,10 +19,6 @@ class MainActivity : AppCompatActivity() {
 
         initToolbar()
 
-        if (savedInstanceState == null) {
-            navigateTo(NotesListFragment())
-        }
-
         setBottomNavigation()
     }
 
@@ -35,15 +26,15 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.bottom_view_note -> {
-                    navigateTo(NotesListFragment())
+                    navigateTo(R.id.notes_list_fragment)
                     true
                 }
                 R.id.bottom_view_date_note -> {
-                    navigateTo(NoteDateListFragment())
+                    navigateTo(R.id.note_date_list_fragment)
                     true
                 }
                 R.id.bottom_view_settings -> {
-                    navigateTo(SettingsFragment())
+                    navigateTo(R.id.settings_fragment)
                     true
                 }
                 else -> false
@@ -51,10 +42,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun navigateTo(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(binding.fragmentContainerView.id, fragment)
-            .commit()
+    private fun navigateTo(fragmentId: Int) {
+        findNavController(binding.fragmentContainerView.id).navigate(fragmentId)
     }
 
     private fun initToolbar() {
