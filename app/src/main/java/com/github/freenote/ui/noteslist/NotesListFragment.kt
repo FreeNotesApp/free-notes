@@ -3,11 +3,13 @@ package com.github.freenote.ui.noteslist
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.github.freenote.R
 import com.github.freenote.databinding.FragmentNotesListBinding
 import com.github.freenote.domain.NoteDbEntity
 import com.github.freenote.ui.base.ScreenState
+import com.github.freenote.ui.note.NoteFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NotesListFragment : Fragment(R.layout.fragment_notes_list) {
@@ -32,11 +34,23 @@ class NotesListFragment : Fragment(R.layout.fragment_notes_list) {
                 vm.onNoteClickedFinished()
             }
         }
+
+        initView()
     }
 
-    private fun renderData(data: ScreenState<List<NoteDbEntity>>) {
+    private fun initView() {
+        binding.fragNotesListFabAdd.setOnClickListener {
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.add(R.id.activity_main, NoteFragment())
+                ?.addToBackStack("")
+                ?.commit()
+        }
+    }
+
+    private fun renderData(data: ScreenState<LiveData<List<NoteDbEntity>>>) {
         when (data) {
             is ScreenState.Success -> {
+                // тут ошибка не пойму почемууууу
                 adapter.submitList(data.value)
             }
             is ScreenState.Loading -> {

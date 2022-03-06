@@ -1,9 +1,6 @@
 package com.github.freenote.ui.noteslist
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.github.freenote.data.repository.NoteRepo
 import com.github.freenote.domain.NoteDbEntity
 import com.github.freenote.ui.base.ScreenState
@@ -15,9 +12,9 @@ class NotesListViewModel(
     ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
-    private val _notes: MutableLiveData<ScreenState<List<NoteDbEntity>>> = MutableLiveData(
+    private val _notes: MutableLiveData<ScreenState<LiveData<List<NoteDbEntity>>>> = MutableLiveData(
         ScreenState.Loading)
-    val notes: LiveData<ScreenState<List<NoteDbEntity>>> = _notes
+    val notes: LiveData<ScreenState<LiveData<List<NoteDbEntity>>>> = _notes
 
     private val _noteClickedEvent = MutableLiveData<NoteDbEntity?>()
     val noteClickedEvent: LiveData<NoteDbEntity?> = _noteClickedEvent

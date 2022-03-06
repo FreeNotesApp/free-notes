@@ -30,11 +30,9 @@ class NoteViewModel (
         }
     }
 
-    fun onNoteClicked(note: NoteDbEntity) {
-        //_noteClickedEvent.value = note
-    }
-
-    fun onNoteClickedFinished() {
-        //_noteClickedEvent.value = null
+    fun onNoteSave(note: NoteDbEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            noteRepo.put(note)
+        }
     }
 }
