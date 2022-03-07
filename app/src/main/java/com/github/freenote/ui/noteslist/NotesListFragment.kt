@@ -3,11 +3,13 @@ package com.github.freenote.ui.noteslist
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.github.freenote.R
 import com.github.freenote.databinding.FragmentNotesListBinding
 import com.github.freenote.domain.NoteDbEntity
 import com.github.freenote.ui.base.ScreenState
+import com.github.freenote.ui.note.NoteFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NotesListFragment : Fragment(R.layout.fragment_notes_list) {
@@ -24,27 +26,30 @@ class NotesListFragment : Fragment(R.layout.fragment_notes_list) {
         binding.fragNotesListRvNotes.adapter = adapter
 
         vm.notes.observe(viewLifecycleOwner) {
-            renderData(it)
+            adapter.submitList(it.reversed())
         }
 
         vm.noteClickedEvent.observe(viewLifecycleOwner) {
             if (it != null) {
+                val bundle = Bundle()
+                bundle.putParcelable(NoteFragment.BUNDLE_EXTRA, it)
+                activity?.supportFragmentManager?.beginTransaction()
+                    ?.replace(R.id.activity_main, NoteFragment.newInstance(bundle))
+                    ?.addToBackStack("")
+                    ?.commit()
                 vm.onNoteClickedFinished()
             }
         }
+
+        initView()
     }
 
-    private fun renderData(data: ScreenState<List<NoteDbEntity>>) {
-        when (data) {
-            is ScreenState.Success -> {
-                adapter.submitList(data.value)
-            }
-            is ScreenState.Loading -> {
-                // todo loading state
-            }
-            is ScreenState.Error -> {
-                // todo error state
-            }
+    private fun initView() {
+        binding.fragNotesListFabAdd.setOnClickListener {
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.add(R.id.activity_main, NoteFragment())
+                ?.addToBackStack("")
+                ?.commit()
         }
     }
 }

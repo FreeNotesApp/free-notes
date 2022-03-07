@@ -4,12 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.freenote.R
 import com.github.freenote.data.repository.NoteRepo
 import com.github.freenote.domain.NoteDbEntity
 import com.github.freenote.ui.base.ScreenState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 class NoteViewModel (
     private val noteRepo: NoteRepo,
@@ -30,11 +32,28 @@ class NoteViewModel (
         }
     }
 
-    fun onNoteClicked(note: NoteDbEntity) {
-        //_noteClickedEvent.value = note
+    fun onNoteSave(text: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            noteRepo.put(NoteDbEntity(
+                id = UUID.randomUUID().toString(),
+                title = "Заметка",
+                text = text,
+                date = System.currentTimeMillis(),
+                color = R.color.white.toString(),
+                number = "0"
+            ))
+        }
     }
 
-    fun onNoteClickedFinished() {
-        //_noteClickedEvent.value = null
+    fun onNoteReplace(note: NoteDbEntity?) {
+        viewModelScope.launch(Dispatchers.IO) {
+            noteRepo.put(note)
+        }
+    }
+
+    fun onNoteDelete(note: NoteDbEntity?) {
+        viewModelScope.launch(Dispatchers.IO) {
+            noteRepo.delete(note)
+        }
     }
 }

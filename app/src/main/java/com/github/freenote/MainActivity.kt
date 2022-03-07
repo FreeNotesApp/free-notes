@@ -10,6 +10,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.github.freenote.databinding.ActivityMainBinding
+import com.github.freenote.ui.SwitchFragment
 import com.github.freenote.ui.notelistdate.NoteDateListFragment
 import com.github.freenote.ui.noteslist.NotesListFragment
 import com.github.freenote.ui.settings.SettingsFragment
@@ -22,61 +23,14 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initToolbar()
-
         if (savedInstanceState == null) {
-            navigateTo(NotesListFragment())
-        }
-
-        setBottomNavigation()
-    }
-
-    private fun setBottomNavigation() {
-        binding.bottomNavigationView.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.bottom_view_note -> {
-                    navigateTo(NotesListFragment())
-                    true
-                }
-                R.id.bottom_view_date_note -> {
-                    navigateTo(NoteDateListFragment())
-                    true
-                }
-                R.id.bottom_view_settings -> {
-                    navigateTo(SettingsFragment())
-                    true
-                }
-                else -> false
-            }
+            navigateTo(SwitchFragment())
         }
     }
 
     private fun navigateTo(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
-            .replace(binding.fragmentContainerView.id, fragment)
+            .replace(R.id.activity_main, fragment)
             .commit()
     }
-
-    private fun initToolbar() {
-        val toolbar = findViewById<Toolbar>(R.id.tool_bar_layout)
-        setSupportActionBar(toolbar)
-        toolbar.title = "Free Notes"
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.menu_note, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.exit_bottom_view_note -> {
-            Toast.makeText(applicationContext, "exit", Toast.LENGTH_SHORT).show()
-            true
-        }
-        else -> {
-            super.onOptionsItemSelected(item)
-        }
-    }
-
 }

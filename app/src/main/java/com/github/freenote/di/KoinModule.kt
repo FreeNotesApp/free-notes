@@ -5,7 +5,6 @@ import com.github.freenote.data.NoteDb
 import com.github.freenote.data.repository.NoteRepo
 import com.github.freenote.data.repository.impl.RepositoryImpl
 import com.github.freenote.data.repository.Repository
-import com.github.freenote.data.repository.impl.FakeNoteRepo
 import com.github.freenote.data.repository.impl.NoteImpl
 import com.github.freenote.ui.note.NoteViewModel
 import com.github.freenote.ui.notelistdate.NoteDateListViewModel

@@ -32,7 +32,7 @@ class NotesAdapter(
             binding.itemNoteTvTitle.text = note.title
             binding.itemNoteTvText.text = note.text
             binding.root.setCardBackgroundColor(
-                itemView.context.getColor(getNoteColorId(note.color))
+                itemView.context.getColor(note.color.toInt())
             )
 
             binding.root.setOnClickListener {
