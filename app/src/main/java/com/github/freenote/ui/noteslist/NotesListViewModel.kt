@@ -1,14 +1,16 @@
 package com.github.freenote.ui.noteslist
 
 import androidx.lifecycle.*
+import com.github.freenote.R
 import com.github.freenote.data.repository.NoteRepo
 import com.github.freenote.domain.NoteDbEntity
 import com.github.freenote.ui.base.ScreenState
 import kotlinx.coroutines.*
 import org.koin.java.KoinJavaComponent.inject
+import java.util.*
 
 class NotesListViewModel(
-    noteRepo: NoteRepo,
+    private val noteRepo: NoteRepo,
 ) : ViewModel() {
 
     val notes: LiveData<List<NoteDbEntity>> = noteRepo.getNotes()

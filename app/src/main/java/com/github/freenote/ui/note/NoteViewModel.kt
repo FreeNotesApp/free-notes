@@ -32,14 +32,14 @@ class NoteViewModel (
         }
     }
 
-    fun onNoteSave(text: String) {
+    fun onNoteSave(text: String, boxStrokeColor: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             noteRepo.put(NoteDbEntity(
                 id = UUID.randomUUID().toString(),
                 title = "Заметка",
                 text = text,
                 date = System.currentTimeMillis(),
-                color = R.color.white.toString(),
+                color = boxStrokeColor.toString(),
                 number = "0"
             ))
         }

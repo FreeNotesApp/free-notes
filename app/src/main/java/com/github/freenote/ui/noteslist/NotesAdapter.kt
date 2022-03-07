@@ -1,6 +1,7 @@
 package com.github.freenote.ui.noteslist
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -34,7 +35,6 @@ class NotesAdapter(
             binding.root.setCardBackgroundColor(
                 itemView.context.getColor(note.color.toInt())
             )
-
             binding.root.setOnClickListener {
                 clickListener(note)
             }

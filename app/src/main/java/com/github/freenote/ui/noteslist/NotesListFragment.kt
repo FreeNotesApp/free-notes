@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
+import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.github.freenote.R
 import com.github.freenote.databinding.FragmentNotesListBinding
@@ -11,6 +12,7 @@ import com.github.freenote.domain.NoteDbEntity
 import com.github.freenote.ui.base.ScreenState
 import com.github.freenote.ui.note.NoteFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.lang.Exception
 
 class NotesListFragment : Fragment(R.layout.fragment_notes_list) {
 
@@ -27,6 +29,7 @@ class NotesListFragment : Fragment(R.layout.fragment_notes_list) {
 
         vm.notes.observe(viewLifecycleOwner) {
             adapter.submitList(it.reversed())
+            binding.fragNotesListRvNotes.smoothScrollToPosition(0)
         }
 
         vm.noteClickedEvent.observe(viewLifecycleOwner) {

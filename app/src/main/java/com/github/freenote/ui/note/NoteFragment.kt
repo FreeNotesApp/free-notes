@@ -25,6 +25,7 @@ class NoteFragment : Fragment(R.layout.fragment_note) {
     private var note: NoteDbEntity? = null
     private var noteDeleteUser = false
     private var colorPanelNote = false
+    private var boxStrokeColor = R.color.yellow_light
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,11 +41,16 @@ class NoteFragment : Fragment(R.layout.fragment_note) {
         }
         note = arguments?.getParcelable(BUNDLE_EXTRA)
 
-        binding.textNoteEditText.setText(note?.text)
-        binding.nameNoteTextInput.hint = note?.title
-        if (note == null)
-            binding.nameNoteTextInput.boxStrokeColor = resources.getColor(R.color.white)
-        binding.nameNoteTextInput.boxStrokeColor = resources.getColor(pushBackgroundNote())
+
+        if (note == null) {
+            binding.nameNoteTextInput.hint = getString(R.string.note)
+            binding.nameNoteTextInput.boxStrokeColor = resources.getColor(R.color.yellow_light)
+        } else {
+            binding.nameNoteTextInput.boxStrokeColor = resources.getColor(pushBackgroundNote())
+            binding.nameNoteTextInput.hint = note?.title
+            binding.textNoteEditText.setText(note?.text)
+        }
+
     }
 
     private fun renderData(data: ScreenState<NoteDbEntity>) {
@@ -62,8 +68,8 @@ class NoteFragment : Fragment(R.layout.fragment_note) {
     }
 
     private fun initToolbar() {
-        val toolbar = activity?.findViewById<Toolbar>(R.id.tool_bar_layout)
-        val appCompatActivity = activity as AppCompatActivity?
+        val toolbar = requireActivity().findViewById<Toolbar>(R.id.tool_bar_layout)
+        val appCompatActivity = requireActivity() as AppCompatActivity?
         appCompatActivity!!.setSupportActionBar(toolbar)
         toolbar?.title = getString(R.string.note)
         setHasOptionsMenu(true)
@@ -120,18 +126,22 @@ class NoteFragment : Fragment(R.layout.fragment_note) {
     private fun saveColorInNoteEntity() = with(binding){
         colorNoteWhite.setOnClickListener {
             note?.color = R.color.white.toString()
+            boxStrokeColor = R.color.white
             binding.nameNoteTextInput.boxStrokeColor = resources.getColor(R.color.white)
         }
         colorNoteYellowLight.setOnClickListener {
             note?.color = R.color.yellow_light.toString()
+            boxStrokeColor = R.color.yellow_light
             binding.nameNoteTextInput.boxStrokeColor = resources.getColor(R.color.yellow_light)
         }
         colorNoteGreenLight.setOnClickListener {
             note?.color = R.color.green_light.toString()
+            boxStrokeColor = R.color.green_light
             binding.nameNoteTextInput.boxStrokeColor = resources.getColor(R.color.green_light)
         }
         colorNoteRedLight.setOnClickListener {
             note?.color = R.color.red_light.toString()
+            boxStrokeColor = R.color.red_light
             binding.nameNoteTextInput.boxStrokeColor = resources.getColor(R.color.red_light)
         }
     }
@@ -150,7 +160,7 @@ class NoteFragment : Fragment(R.layout.fragment_note) {
         super.onPause()
         if (!noteDeleteUser) {
             if (note == null)
-                vm.onNoteSave(binding.textNoteEditText.text.toString())
+                vm.onNoteSave(binding.textNoteEditText.text.toString(), boxStrokeColor)
             else {
                 note?.text = binding.textNoteEditText.text.toString()
                 vm.onNoteReplace(note)

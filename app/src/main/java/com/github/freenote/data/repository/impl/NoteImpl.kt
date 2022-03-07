@@ -11,7 +11,6 @@ class NoteImpl(private val noteDao: NoteDao) : NoteRepo {
         return noteDao.getNotesDb()
     }
 
-
     override fun put(note: NoteDbEntity?) {
         noteDao.put(note)
     }
