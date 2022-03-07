@@ -29,7 +29,6 @@ class NotesListFragment : Fragment(R.layout.fragment_notes_list) {
 
         vm.notes.observe(viewLifecycleOwner) {
             adapter.submitList(it.reversed())
-            binding.fragNotesListRvNotes.smoothScrollToPosition(0)
         }
 
         vm.noteClickedEvent.observe(viewLifecycleOwner) {

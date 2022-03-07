@@ -45,13 +45,13 @@ class NoteViewModel (
         }
     }
 
-    fun onNoteReplace(note: NoteDbEntity?) {
+    fun onNoteReplace(note: NoteDbEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             noteRepo.put(note)
         }
     }
 
-    fun onNoteDelete(note: NoteDbEntity?) {
+    fun onNoteDelete(note: NoteDbEntity) {
         viewModelScope.launch(Dispatchers.IO) {
             noteRepo.delete(note)
         }

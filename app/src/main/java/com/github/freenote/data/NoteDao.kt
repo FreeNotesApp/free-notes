@@ -14,8 +14,8 @@ interface NoteDao {
     fun clear()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun put(note: NoteDbEntity?)
+    fun put(note: NoteDbEntity)
 
     @Delete
-    fun delete(note: NoteDbEntity?)
+    fun delete(note: NoteDbEntity)
 }

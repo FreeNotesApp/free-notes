@@ -9,6 +9,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.marginLeft
 import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.github.freenote.R
@@ -82,7 +83,7 @@ class NoteFragment : Fragment(R.layout.fragment_note) {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.delete_bottom_view_note -> {
-            vm.onNoteDelete(note)
+            note?.let { vm.onNoteDelete(it) }
             noteDeleteUser = true
             true
         }
@@ -163,7 +164,7 @@ class NoteFragment : Fragment(R.layout.fragment_note) {
                 vm.onNoteSave(binding.textNoteEditText.text.toString(), boxStrokeColor)
             else {
                 note?.text = binding.textNoteEditText.text.toString()
-                vm.onNoteReplace(note)
+                note?.let { vm.onNoteReplace(it) }
             }
         }
     }
