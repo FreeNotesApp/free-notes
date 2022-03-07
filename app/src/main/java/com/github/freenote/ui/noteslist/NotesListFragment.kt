@@ -26,11 +26,17 @@ class NotesListFragment : Fragment(R.layout.fragment_notes_list) {
         binding.fragNotesListRvNotes.adapter = adapter
 
         vm.notes.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+            adapter.submitList(it.reversed())
         }
 
         vm.noteClickedEvent.observe(viewLifecycleOwner) {
             if (it != null) {
+                val bundle = Bundle()
+                bundle.putParcelable(NoteFragment.BUNDLE_EXTRA, it)
+                activity?.supportFragmentManager?.beginTransaction()
+                    ?.replace(R.id.activity_main, NoteFragment.newInstance(bundle))
+                    ?.addToBackStack("")
+                    ?.commit()
                 vm.onNoteClickedFinished()
             }
         }

@@ -5,7 +5,8 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
+import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -15,20 +16,35 @@ import com.github.freenote.databinding.FragmentNoteBinding
 import com.github.freenote.domain.NoteDbEntity
 import com.github.freenote.ui.base.ScreenState
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.*
 
 class NoteFragment : Fragment(R.layout.fragment_note) {
 
     private val binding: FragmentNoteBinding by viewBinding(FragmentNoteBinding::bind)
     private val vm: NoteViewModel by viewModel()
 
+    private var note: NoteDbEntity? = null
+    private var noteDeleteUser = false
+    private var colorPanelNote = false
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initToolbar()
+        initView()
+        saveColorInNoteEntity()
+    }
+
+    private fun initView() {
         vm.notes.observe(viewLifecycleOwner) {
             renderData(it)
         }
+        note = arguments?.getParcelable(BUNDLE_EXTRA)
+
+        binding.textNoteEditText.setText(note?.text)
+        binding.nameNoteTextInput.hint = note?.title
+        if (note == null)
+            binding.nameNoteTextInput.boxStrokeColor = resources.getColor(R.color.white)
+        binding.nameNoteTextInput.boxStrokeColor = resources.getColor(pushBackgroundNote())
     }
 
     private fun renderData(data: ScreenState<NoteDbEntity>) {
@@ -49,7 +65,7 @@ class NoteFragment : Fragment(R.layout.fragment_note) {
         val toolbar = activity?.findViewById<Toolbar>(R.id.tool_bar_layout)
         val appCompatActivity = activity as AppCompatActivity?
         appCompatActivity!!.setSupportActionBar(toolbar)
-        toolbar?.title = "Notes"
+        toolbar?.title = getString(R.string.note)
         setHasOptionsMenu(true)
     }
 
@@ -59,8 +75,24 @@ class NoteFragment : Fragment(R.layout.fragment_note) {
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.exit_bottom_view_note -> {
-            Toast.makeText(context, "exit", Toast.LENGTH_SHORT).show()
+        R.id.delete_bottom_view_note -> {
+            vm.onNoteDelete(note)
+            noteDeleteUser = true
+            true
+        }
+        R.id.change_title_bottom_view_note -> {
+            changeTitleNote()
+            true
+        }
+        R.id.color_bottom_view_note -> {
+            if (colorPanelNote) {
+                binding.colorLinearSearch.visibility = View.GONE
+                colorPanelNote = false
+            }
+            else {
+                binding.colorLinearSearch.visibility = View.VISIBLE
+                colorPanelNote = true
+            }
             true
         }
         else -> {
@@ -68,24 +100,72 @@ class NoteFragment : Fragment(R.layout.fragment_note) {
         }
     }
 
-    private fun saveNote(): NoteDbEntity {
-        return NoteDbEntity(
-            id = UUID.randomUUID().toString(),
-            title = "fake title",
-            text = binding.textNoteEditText.text.toString(),
-            date = System.currentTimeMillis(),
-            color = "While",
-            number = "0"
-        )
+    private fun changeTitleNote() {
+        val editText = EditText(context)
+        editText.setText(note?.title)
+        val dialogBuilder = activity?.let { AlertDialog.Builder(it) }
+        dialogBuilder
+            ?.setView(editText)
+            ?.setCancelable(false)
+            ?.setPositiveButton(getString(R.string.ok)) { dialog, _ ->
+                note?.title = editText.text.toString()
+                binding.nameNoteTextInput.hint = editText.text.toString()
+                dialog.dismiss()
+            }
+        val alert = dialogBuilder?.create()
+        alert?.setTitle(getString(R.string.change_title))
+        alert?.show()
+    }
+
+    private fun saveColorInNoteEntity() = with(binding){
+        colorNoteWhite.setOnClickListener {
+            note?.color = R.color.white.toString()
+            binding.nameNoteTextInput.boxStrokeColor = resources.getColor(R.color.white)
+        }
+        colorNoteYellowLight.setOnClickListener {
+            note?.color = R.color.yellow_light.toString()
+            binding.nameNoteTextInput.boxStrokeColor = resources.getColor(R.color.yellow_light)
+        }
+        colorNoteGreenLight.setOnClickListener {
+            note?.color = R.color.green_light.toString()
+            binding.nameNoteTextInput.boxStrokeColor = resources.getColor(R.color.green_light)
+        }
+        colorNoteRedLight.setOnClickListener {
+            note?.color = R.color.red_light.toString()
+            binding.nameNoteTextInput.boxStrokeColor = resources.getColor(R.color.red_light)
+        }
+    }
+
+    private fun pushBackgroundNote(): Int {
+        when (note?.color) {
+            R.color.white.toString() -> return R.color.white
+            R.color.yellow_light.toString() -> return R.color.yellow_light
+            R.color.green_light.toString() -> return R.color.green_light
+            R.color.red_light.toString() -> return R.color.red_light
+        }
+        return R.color.white
     }
 
     override fun onPause() {
         super.onPause()
-        vm.onNoteSave(saveNote())
+        if (!noteDeleteUser) {
+            if (note == null)
+                vm.onNoteSave(binding.textNoteEditText.text.toString())
+            else {
+                note?.text = binding.textNoteEditText.text.toString()
+                vm.onNoteReplace(note)
+            }
+        }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        vm.onNoteSave(saveNote())
+    companion object {
+        const val BUNDLE_EXTRA = "note_bundle"
+
+        @JvmStatic
+        fun newInstance(bundle: Bundle): NoteFragment {
+            val fragment = NoteFragment()
+            fragment.arguments = bundle
+            return fragment
+        }
     }
 }

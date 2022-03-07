@@ -12,7 +12,7 @@ class NoteImpl(private val noteDao: NoteDao) : NoteRepo {
     }
 
 
-    override fun put(note: NoteDbEntity) {
+    override fun put(note: NoteDbEntity?) {
         noteDao.put(note)
     }
 
@@ -20,7 +20,7 @@ class NoteImpl(private val noteDao: NoteDao) : NoteRepo {
         noteDao.clear()
     }
 
-    override fun delete(note: NoteDbEntity) {
+    override fun delete(note: NoteDbEntity?) {
         noteDao.delete(note)
     }
 }
