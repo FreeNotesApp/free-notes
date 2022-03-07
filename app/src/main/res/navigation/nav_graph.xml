@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/notes_list_fragment">
+
+    <fragment
+        android:id="@+id/notes_list_fragment"
+        android:name="com.github.freenote.ui.noteslist.NotesListFragment"
+        android:label="NotesListFragment"
+        tools:layout="@layout/fragment_notes_list" />
+
+    <fragment
+        android:id="@+id/settings_fragment"
+        android:name="com.github.freenote.ui.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/note_date_list_fragment"
+        android:name="com.github.freenote.ui.notelistdate.NoteDateListFragment"
+        android:label="fragment_note_date_list"
+        tools:layout="@layout/fragment_note_date_list" />
+</navigation>
