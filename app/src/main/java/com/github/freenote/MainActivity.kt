@@ -2,35 +2,56 @@ package com.github.freenote
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.widget.Toast
-import androidx.appcompat.widget.SearchView
-import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.Fragment
+import androidx.core.view.isVisible
+import androidx.navigation.findNavController
 import com.github.freenote.databinding.ActivityMainBinding
-import com.github.freenote.ui.SwitchFragment
-import com.github.freenote.ui.notelistdate.NoteDateListFragment
-import com.github.freenote.ui.noteslist.NotesListFragment
-import com.github.freenote.ui.settings.SettingsFragment
+import com.github.freenote.ui.base.BaseFragment
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), BaseFragment.Contract {
 
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setSupportActionBar(binding.toolBarLayout)
+        setBottomNavigation()
+    }
 
-        if (savedInstanceState == null) {
-            navigateTo(SwitchFragment())
+    override fun setToolbarTitle(resId: Int) {
+        binding.toolBarLayout.title = resources.getString(resId)
+    }
+
+    override fun setToolbarVisibility(isVisible: Boolean) {
+        binding.appBarLayout.isVisible = isVisible
+    }
+
+    override fun setBottomNavVisibility(isVisible: Boolean) {
+        binding.bottomNavigationView.isVisible = isVisible
+    }
+
+    private fun setBottomNavigation() {
+        binding.bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.bottom_view_note -> {
+                    navigateTo(R.id.notes_list_fragment)
+                    true
+                }
+                R.id.bottom_view_date_note -> {
+                    navigateTo(R.id.note_date_list_fragment)
+                    true
+                }
+                R.id.bottom_view_settings -> {
+                    navigateTo(R.id.settings_fragment)
+                    true
+                }
+                else -> false
+            }
         }
     }
 
-    private fun navigateTo(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.activity_main, fragment)
-            .commit()
+    private fun navigateTo(fragmentId: Int) {
+        findNavController(binding.fragmentContainerView.id).navigate(fragmentId)
     }
 }

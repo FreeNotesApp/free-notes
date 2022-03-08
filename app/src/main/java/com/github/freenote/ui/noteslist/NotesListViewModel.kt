@@ -1,13 +1,10 @@
 package com.github.freenote.ui.noteslist
 
-import androidx.lifecycle.*
-import com.github.freenote.R
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.github.freenote.data.repository.NoteRepo
 import com.github.freenote.domain.NoteDbEntity
-import com.github.freenote.ui.base.ScreenState
-import kotlinx.coroutines.*
-import org.koin.java.KoinJavaComponent.inject
-import java.util.*
 
 class NotesListViewModel(
     private val noteRepo: NoteRepo,
@@ -18,11 +15,22 @@ class NotesListViewModel(
     private val _noteClickedEvent = MutableLiveData<NoteDbEntity?>()
     val noteClickedEvent: LiveData<NoteDbEntity?> = _noteClickedEvent
 
-    fun onNoteClicked(note: NoteDbEntity) {
+    private val _createNoteClickedEvent = MutableLiveData<Boolean?>()
+    val createNoteClickedEvent: LiveData<Boolean?> = _createNoteClickedEvent
+
+    fun onNoteClicked(note: NoteDbEntity?) {
         _noteClickedEvent.value = note
     }
 
     fun onNoteClickedFinished() {
         _noteClickedEvent.value = null
+    }
+
+    fun onCreateNoteClicked() {
+        _createNoteClickedEvent.value = true
+    }
+
+    fun onCreateNoteClickedFinished() {
+        _createNoteClickedEvent.value = null
     }
 }

@@ -4,8 +4,8 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.github.freenote.ui.utils.NotesColors
-import kotlinx.android.parcel.Parcelize
+import com.github.freenote.ui.utils.NotesColor
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @Entity(tableName = "note")
@@ -15,6 +15,6 @@ data class NoteDbEntity(
     @ColumnInfo(name = "title") var title: String,
     @ColumnInfo(name = "text") var text: String,
     @ColumnInfo(name = "date") var date: Long,
-    @ColumnInfo(name = "color") var color: String,
+    @ColumnInfo(name = "color") var color: NotesColor,
     @ColumnInfo(name = "number") var number: String
 ) : Parcelable

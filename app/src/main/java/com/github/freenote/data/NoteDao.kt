@@ -7,7 +7,7 @@ import com.github.freenote.domain.NoteDbEntity
 
 @Dao
 interface NoteDao {
-    @Query("SELECT * FROM note")
+    @Query("SELECT * FROM note ORDER by date DESC")
     fun getNotesDb() : LiveData<List<NoteDbEntity>>
 
     @Query("DELETE FROM note")
@@ -16,6 +16,6 @@ interface NoteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun put(note: NoteDbEntity)
 
-    @Delete
-    fun delete(note: NoteDbEntity)
+    @Query("DELETE FROM note WHERE id = (:id)")
+    fun delete(id: String)
 }

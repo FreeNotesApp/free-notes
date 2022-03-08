@@ -19,7 +19,7 @@ class NoteImpl(private val noteDao: NoteDao) : NoteRepo {
         noteDao.clear()
     }
 
-    override fun delete(note: NoteDbEntity) {
-        noteDao.delete(note)
+    override fun delete(id: String) {
+        noteDao.delete(id)
     }
 }

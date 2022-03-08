@@ -25,5 +25,4 @@ val viewModelModule = module {
     viewModel { NoteViewModel(get()) }
     viewModel { NoteDateListViewModel(get()) }
     viewModel { SettingsViewModel(get()) }
-    //viewModel { NotesListViewModel(FakeNoteRepo()) }
 }
