@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
@@ -18,6 +19,7 @@ import com.github.freenote.ui.base.BaseFragment
 import com.github.freenote.ui.utils.NotesColor
 import com.github.freenote.ui.utils.getNoteColorId
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.concurrent.thread
 
 const val NOTE_EXTRA_KEY = "note"
 
@@ -52,18 +54,22 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
 
         binding.colorNoteWhite.setOnClickListener {
             vm.onColorChanged(NotesColor.DEFAULT)
+            vm.onChangeColorPanelState()
         }
 
         binding.colorNoteRedLight.setOnClickListener {
             vm.onColorChanged(NotesColor.RED)
+            vm.onChangeColorPanelState()
         }
 
         binding.colorNoteYellowLight.setOnClickListener {
             vm.onColorChanged(NotesColor.YELLOW)
+            vm.onChangeColorPanelState()
         }
 
         binding.colorNoteGreenLight.setOnClickListener {
             vm.onColorChanged(NotesColor.GREEN)
+            vm.onChangeColorPanelState()
         }
     }
 
@@ -75,12 +81,10 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
         }
 
         vm.color.observe(viewLifecycleOwner) {
-            binding.noteCardView.setCardBackgroundColor(
+            binding.nameNoteTextInput.boxStrokeColor =
                 resources.getColor(
                     getNoteColorId(it),
-                    null
-                )
-            )
+                    null)
         }
 
         vm.navigateBackEvent.observe(viewLifecycleOwner) {
@@ -96,6 +100,25 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
 
         vm.colorPanelState.observe(viewLifecycleOwner) {
             binding.colorLinearSearch.isVisible = it
+            if (it) with(binding) {
+                ViewCompat.animate(colorNoteWhite)
+                    .translationY(0F)
+                ViewCompat.animate(colorNoteGreenLight)
+                    .translationY(0F)
+                ViewCompat.animate(colorNoteRedLight)
+                    .translationY(0F)
+                ViewCompat.animate(colorNoteYellowLight)
+                    .translationY(0F)
+            } else with(binding) {
+                ViewCompat.animate(colorNoteWhite)
+                    .translationY(-200F)
+                ViewCompat.animate(colorNoteGreenLight)
+                    .translationY(-200F)
+                ViewCompat.animate(colorNoteRedLight)
+                    .translationY(200F)
+                ViewCompat.animate(colorNoteYellowLight)
+                    .translationY(200F)
+            }
         }
     }
 

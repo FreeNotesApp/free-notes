@@ -7,10 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.github.freenote.data.repository.NoteRepo
 import com.github.freenote.domain.NoteDbEntity
 import com.github.freenote.ui.utils.NotesColor
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.util.*
+import kotlin.concurrent.thread
 
 class NoteViewModel (
     private val noteRepo: NoteRepo,
