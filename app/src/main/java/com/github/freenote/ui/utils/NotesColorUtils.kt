@@ -2,15 +2,15 @@ package com.github.freenote.ui.utils
 
 import com.github.freenote.R
 
-enum class NotesColors {
+enum class NotesColor {
     DEFAULT, YELLOW, GREEN, RED
 }
 
-fun getNoteColorId(notesColors: NotesColors): Int {
+fun getNoteColorId(notesColors: NotesColor): Int {
     return when (notesColors) {
-        NotesColors.DEFAULT -> R.color.white
-        NotesColors.YELLOW -> R.color.yellow_light
-        NotesColors.GREEN -> R.color.green_light
-        NotesColors.RED -> R.color.red_light
+        NotesColor.DEFAULT -> R.color.white
+        NotesColor.YELLOW -> R.color.yellow_light
+        NotesColor.GREEN -> R.color.green_light
+        NotesColor.RED -> R.color.red_light
     }
 }

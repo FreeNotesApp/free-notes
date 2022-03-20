@@ -23,6 +23,14 @@ class NotesAdapter(
         holder.bind(getItem(position), clickListener)
     }
 
+    fun submitListWithScroll(list: List<NoteDbEntity>, commitCallback: Runnable?) {
+        if (!currentList.isNullOrEmpty() && !list.isNullOrEmpty() && currentList.find { it.id == list.first().id } == null) {
+            super.submitList(list, commitCallback)
+        } else {
+            super.submitList(list)
+        }
+    }
+
     class NoteViewHolder(viewGroup: ViewGroup) : RecyclerView.ViewHolder(
         LayoutInflater.from(viewGroup.context).inflate(R.layout.item_note, viewGroup, false)
     ) {
@@ -32,9 +40,8 @@ class NotesAdapter(
             binding.itemNoteTvTitle.text = note.title
             binding.itemNoteTvText.text = note.text
             binding.root.setCardBackgroundColor(
-                itemView.context.getColor(note.color.toInt())
+                itemView.context.getColor(getNoteColorId(note.color))
             )
-
             binding.root.setOnClickListener {
                 clickListener(note)
             }

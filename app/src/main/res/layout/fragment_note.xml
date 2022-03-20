@@ -5,95 +5,91 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:id="@+id/note_fragment"
-    android:focusable="true"
-    android:clickable="true"
     tools:context=".ui.note.NoteFragment">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar_layout"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/fragment_container_view"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/tool_bar_layout"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/note_card_view"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:elevation="@dimen/elevation_note" />
-    </com.google.android.material.appbar.AppBarLayout>
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/main_margin_half"
+            android:elevation="@dimen/elevation_note"
+            app:cardCornerRadius="@dimen/card_corner_radiusNote">
 
-    <LinearLayout
-        android:id="@+id/color_linear_search"
-        android:background="@color/red_red"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone">
-
-        <Button
-            android:id="@+id/color_note_white"
-            android:backgroundTint="@color/white"
-            android:layout_margin="@dimen/margin_8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <Button
-            android:id="@+id/color_note_yellow_light"
-            android:backgroundTint="@color/yellow_light"
-            android:layout_margin="@dimen/margin_8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <Button
-            android:id="@+id/color_note_green_light"
-            android:backgroundTint="@color/green_light"
-            android:layout_margin="@dimen/margin_8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <Button
-            android:id="@+id/color_note_red_light"
-            android:backgroundTint="@color/red_light"
-            android:layout_margin="@dimen/margin_8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-    </LinearLayout>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/note_card_view"
-        android:elevation="@dimen/elevation_note"
-        app:cardCornerRadius="@dimen/card_corner_radiusNote"
-        android:layout_marginLeft="@dimen/margin_8dp"
-        android:layout_marginRight="@dimen/margin_8dp"
-        android:layout_marginTop="@dimen/margin_8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/name_note_text_input"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/simple_note"
-            app:counterEnabled="true"
-            app:endIconCheckable="true"
-            app:endIconMode="custom">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/text_note_edit_text"
-                android:textColor="@color/black"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/name_note_text_input"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/main_margin_half"
+                android:hint="@string/simple_note"
+                app:counterEnabled="true"
+                app:endIconCheckable="true"
+                app:endIconMode="custom">
 
-    </androidx.cardview.widget.CardView>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_note_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </androidx.cardview.widget.CardView>
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/color_linear_search"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/color_note_white"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:cardCornerRadius="@dimen/radius_color_note"
+                    android:layout_margin="@dimen/main_margin_half"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/white" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/color_note_yellow_light"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:cardCornerRadius="@dimen/radius_color_note"
+                    android:layout_margin="@dimen/main_margin_half"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/yellow_light" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/color_note_green_light"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:cardCornerRadius="@dimen/radius_color_note"
+                    android:layout_margin="@dimen/main_margin_half"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/green_light" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/color_note_red_light"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:cardCornerRadius="@dimen/radius_color_note"
+                    android:layout_margin="@dimen/main_margin_half"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/red_light" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </FrameLayout>
 </LinearLayout>

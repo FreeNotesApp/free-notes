@@ -2,17 +2,18 @@ package com.github.freenote.ui.noteslist
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.github.freenote.R
 import com.github.freenote.databinding.FragmentNotesListBinding
 import com.github.freenote.domain.NoteDbEntity
-import com.github.freenote.ui.base.ScreenState
-import com.github.freenote.ui.note.NoteFragment
+import com.github.freenote.ui.base.BaseFragment
+import com.github.freenote.ui.note.NOTE_EXTRA_KEY
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class NotesListFragment : Fragment(R.layout.fragment_notes_list) {
+class NotesListFragment : BaseFragment(R.layout.fragment_notes_list) {
 
     private val binding: FragmentNotesListBinding by viewBinding(FragmentNotesListBinding::bind)
     private val vm: NotesListViewModel by viewModel()
@@ -25,31 +26,39 @@ class NotesListFragment : Fragment(R.layout.fragment_notes_list) {
         adapter = NotesAdapter(vm::onNoteClicked)
         binding.fragNotesListRvNotes.adapter = adapter
 
-        vm.notes.observe(viewLifecycleOwner) {
-            adapter.submitList(it.reversed())
+        binding.fragNotesListFabAdd.setOnClickListener {
+            vm.onCreateNoteClicked()
         }
 
+        setToolbarTitle(R.string.notes_list_title)
+        initObservers()
+    }
+
+    private fun initObservers() {
         vm.noteClickedEvent.observe(viewLifecycleOwner) {
             if (it != null) {
-                val bundle = Bundle()
-                bundle.putParcelable(NoteFragment.BUNDLE_EXTRA, it)
-                activity?.supportFragmentManager?.beginTransaction()
-                    ?.replace(R.id.activity_main, NoteFragment.newInstance(bundle))
-                    ?.addToBackStack("")
-                    ?.commit()
+                navigateToNote(it)
                 vm.onNoteClickedFinished()
             }
         }
 
-        initView()
+        vm.notes.observe(viewLifecycleOwner) {
+            adapter.submitListWithScroll(it) {
+                val manager = binding.fragNotesListRvNotes.layoutManager as LinearLayoutManager
+                manager.scrollToPosition(0)
+            }
+        }
+
+        vm.createNoteClickedEvent.observe(viewLifecycleOwner) {
+            if (it != null) {
+                navigateToNote(null)
+                vm.onCreateNoteClickedFinished()
+            }
+        }
     }
 
-    private fun initView() {
-        binding.fragNotesListFabAdd.setOnClickListener {
-            activity?.supportFragmentManager?.beginTransaction()
-                ?.add(R.id.activity_main, NoteFragment())
-                ?.addToBackStack("")
-                ?.commit()
-        }
+    private fun navigateToNote(note: NoteDbEntity?) {
+        val bundle = bundleOf(NOTE_EXTRA_KEY to note)
+        findNavController().navigate(R.id.note_fragment, bundle)
     }
 }

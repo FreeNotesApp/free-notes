@@ -5,7 +5,7 @@ import com.github.freenote.domain.NoteDbEntity
 
 interface NoteRepo {
     fun getNotes(): LiveData<List<NoteDbEntity>>
-    fun put(note: NoteDbEntity?)
+    fun put(note: NoteDbEntity)
     fun clear()
-    fun delete(note: NoteDbEntity?)
+    fun delete(id: String)
 }

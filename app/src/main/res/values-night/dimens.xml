@@ -5,5 +5,4 @@
     <dimen name="main_margin_quarter">4dp</dimen>
     <dimen name="card_corner_radiusNote">16dp</dimen>
     <dimen name="elevation_note">8dp</dimen>
-    <dimen name="margin_8dp">8dp</dimen>
 </resources>
