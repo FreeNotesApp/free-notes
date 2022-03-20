@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/bottom_view_note"
-        android:icon="@android:drawable/ic_media_play"
-        android:title="Note" />
+        android:id="@+id/notes_list"
+        android:icon="@drawable/ic_notes_list"
+        android:title="@string/notes_list_title" />
     <item
-        android:id="@+id/bottom_view_date_note"
-        android:icon="@android:drawable/ic_dialog_email"
-        android:title="Note Date" />
+        android:id="@+id/notes_list_date"
+        android:icon="@drawable/ic_date_notes_list"
+        android:title="@string/notes_list_dates_title" />
     <item
-        android:id="@+id/bottom_view_settings"
-        android:icon="@android:drawable/ic_menu_manage"
-        android:title="Settings" />
+        android:id="@+id/settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/settings_title" />
 </menu>

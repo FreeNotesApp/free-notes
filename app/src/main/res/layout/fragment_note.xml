@@ -15,9 +15,7 @@
             android:id="@+id/note_card_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/margin_8dp"
-            android:layout_marginTop="@dimen/margin_8dp"
-            android:layout_marginRight="@dimen/margin_8dp"
+            android:layout_margin="@dimen/main_margin_half"
             android:elevation="@dimen/elevation_note"
             app:cardCornerRadius="@dimen/card_corner_radiusNote">
 
@@ -26,9 +24,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_8dp"
-                android:layout_marginTop="@dimen/margin_8dp"
-                android:layout_marginRight="@dimen/margin_8dp"
+                android:layout_margin="@dimen/main_margin_half"
                 android:hint="@string/simple_note"
                 app:counterEnabled="true"
                 app:endIconCheckable="true"
@@ -46,6 +42,7 @@
             android:id="@+id/color_linear_search"
             android:layout_width="300dp"
             android:layout_height="60dp"
+            android:visibility="gone"
             android:layout_gravity="center"
             android:orientation="horizontal">
 
@@ -60,7 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:cardCornerRadius="@dimen/radius_color_note"
-                    android:layout_margin="@dimen/margin_8dp"
+                    android:layout_margin="@dimen/main_margin_half"
                     android:layout_weight="1"
                     android:backgroundTint="@color/white" />
 
@@ -69,7 +66,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:cardCornerRadius="@dimen/radius_color_note"
-                    android:layout_margin="@dimen/margin_8dp"
+                    android:layout_margin="@dimen/main_margin_half"
                     android:layout_weight="1"
                     android:backgroundTint="@color/yellow_light" />
 
@@ -78,7 +75,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:cardCornerRadius="@dimen/radius_color_note"
-                    android:layout_margin="@dimen/margin_8dp"
+                    android:layout_margin="@dimen/main_margin_half"
                     android:layout_weight="1"
                     android:backgroundTint="@color/green_light" />
 
@@ -87,7 +84,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:cardCornerRadius="@dimen/radius_color_note"
-                    android:layout_margin="@dimen/margin_8dp"
+                    android:layout_margin="@dimen/main_margin_half"
                     android:layout_weight="1"
                     android:backgroundTint="@color/red_light" />
 

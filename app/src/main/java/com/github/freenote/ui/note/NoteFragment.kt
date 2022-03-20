@@ -1,5 +1,9 @@
 package com.github.freenote.ui.note
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -7,7 +11,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
@@ -19,9 +22,11 @@ import com.github.freenote.ui.base.BaseFragment
 import com.github.freenote.ui.utils.NotesColor
 import com.github.freenote.ui.utils.getNoteColorId
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import kotlin.concurrent.thread
 
 const val NOTE_EXTRA_KEY = "note"
+private const val ANIMATION_START_POSITION = 200f
+private const val ANIMATION_END_POSITION = 0f
+private const val ANIMATION_TYPE = "translationY"
 
 class NoteFragment : BaseFragment(R.layout.fragment_note) {
 
@@ -29,6 +34,28 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
     private val vm: NoteViewModel by viewModel()
 
     override val shownBottomNav: Boolean = false
+
+    private val startAnimationsList by lazy {
+        with(binding) {
+            listOf(
+                ObjectAnimator.ofFloat(colorNoteWhite, ANIMATION_TYPE, -ANIMATION_START_POSITION, ANIMATION_END_POSITION),
+                ObjectAnimator.ofFloat(colorNoteGreenLight, ANIMATION_TYPE, -ANIMATION_START_POSITION, ANIMATION_END_POSITION),
+                ObjectAnimator.ofFloat(colorNoteRedLight, ANIMATION_TYPE, ANIMATION_START_POSITION, ANIMATION_END_POSITION),
+                ObjectAnimator.ofFloat(colorNoteYellowLight, ANIMATION_TYPE, ANIMATION_START_POSITION, ANIMATION_END_POSITION),
+            )
+        }
+    }
+
+    private val closeAnimationsList by lazy {
+        with(binding) {
+            listOf(
+                ObjectAnimator.ofFloat(colorNoteWhite, ANIMATION_TYPE, ANIMATION_END_POSITION, -ANIMATION_START_POSITION),
+                ObjectAnimator.ofFloat(colorNoteGreenLight, ANIMATION_TYPE, ANIMATION_END_POSITION, -ANIMATION_START_POSITION),
+                ObjectAnimator.ofFloat(colorNoteRedLight, ANIMATION_TYPE, ANIMATION_END_POSITION, ANIMATION_START_POSITION),
+                ObjectAnimator.ofFloat(colorNoteYellowLight, ANIMATION_TYPE, ANIMATION_END_POSITION, ANIMATION_START_POSITION),
+            )
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,7 +111,8 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
             binding.nameNoteTextInput.boxStrokeColor =
                 resources.getColor(
                     getNoteColorId(it),
-                    null)
+                    null
+                )
         }
 
         vm.navigateBackEvent.observe(viewLifecycleOwner) {
@@ -99,25 +127,24 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
         }
 
         vm.colorPanelState.observe(viewLifecycleOwner) {
-            binding.colorLinearSearch.isVisible = it
-            if (it) with(binding) {
-                ViewCompat.animate(colorNoteWhite)
-                    .translationY(0F)
-                ViewCompat.animate(colorNoteGreenLight)
-                    .translationY(0F)
-                ViewCompat.animate(colorNoteRedLight)
-                    .translationY(0F)
-                ViewCompat.animate(colorNoteYellowLight)
-                    .translationY(0F)
-            } else with(binding) {
-                ViewCompat.animate(colorNoteWhite)
-                    .translationY(-200F)
-                ViewCompat.animate(colorNoteGreenLight)
-                    .translationY(-200F)
-                ViewCompat.animate(colorNoteRedLight)
-                    .translationY(200F)
-                ViewCompat.animate(colorNoteYellowLight)
-                    .translationY(200F)
+            val animationSet = if (it) startAnimationsList else closeAnimationsList
+
+            AnimatorSet().apply {
+                playTogether(*animationSet.toTypedArray())
+                addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationStart(animation: Animator?, isReverse: Boolean) {
+                        if (it) {
+                            binding.colorLinearSearch.isVisible = it
+                        }
+                    }
+
+                    override fun onAnimationEnd(animation: Animator) {
+                        if (!it) {
+                            binding.colorLinearSearch.isVisible = it
+                        }
+                    }
+                })
+                start()
             }
         }
     }
