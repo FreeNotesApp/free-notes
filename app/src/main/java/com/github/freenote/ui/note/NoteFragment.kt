@@ -1,11 +1,8 @@
 package com.github.freenote.ui.note
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.widget.EditText
+import android.view.*
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
@@ -19,12 +16,10 @@ import com.github.freenote.ui.base.BaseFragment
 import com.github.freenote.ui.utils.NotesColor
 import com.github.freenote.ui.utils.getNoteColorId
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import kotlin.concurrent.thread
 
 const val NOTE_EXTRA_KEY = "note"
 
 class NoteFragment : BaseFragment(R.layout.fragment_note) {
-
     private val binding: FragmentNoteBinding by viewBinding(FragmentNoteBinding::bind)
     private val vm: NoteViewModel by viewModel()
 
@@ -71,6 +66,26 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
             vm.onColorChanged(NotesColor.GREEN)
             vm.onChangeColorPanelState()
         }
+
+        binding.colorNotePurple.setOnClickListener {
+            vm.onColorChanged(NotesColor.PURPLE)
+            vm.onChangeColorPanelState()
+        }
+
+        binding.colorNoteYellowBig.setOnClickListener {
+            vm.onColorChanged(NotesColor.YELLOW_BIG)
+            vm.onChangeColorPanelState()
+        }
+
+        binding.colorNoteGreenSwamp.setOnClickListener {
+            vm.onColorChanged(NotesColor.GREEN_SWAMP)
+            vm.onChangeColorPanelState()
+        }
+
+        binding.colorNoteBrown.setOnClickListener {
+            vm.onColorChanged(NotesColor.BROWN)
+            vm.onChangeColorPanelState()
+        }
     }
 
     private fun initObservers() {
@@ -102,22 +117,22 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
             binding.colorLinearSearch.isVisible = it
             if (it) with(binding) {
                 ViewCompat.animate(colorNoteWhite)
-                    .translationY(0F)
+                    .translationY(NULL_POSITION)
                 ViewCompat.animate(colorNoteGreenLight)
-                    .translationY(0F)
+                    .translationY(NULL_POSITION)
                 ViewCompat.animate(colorNoteRedLight)
-                    .translationY(0F)
+                    .translationY(NULL_POSITION)
                 ViewCompat.animate(colorNoteYellowLight)
-                    .translationY(0F)
+                    .translationY(NULL_POSITION)
             } else with(binding) {
                 ViewCompat.animate(colorNoteWhite)
-                    .translationY(-200F)
+                    .translationY(START_COLOR_POSITION_MIN)
                 ViewCompat.animate(colorNoteGreenLight)
-                    .translationY(-200F)
+                    .translationY(START_COLOR_POSITION_MIN)
                 ViewCompat.animate(colorNoteRedLight)
-                    .translationY(200F)
+                    .translationY(START_COLOR_POSITION_PLS)
                 ViewCompat.animate(colorNoteYellowLight)
-                    .translationY(200F)
+                    .translationY(START_COLOR_POSITION_PLS)
             }
         }
     }
@@ -144,20 +159,27 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
             super.onOptionsItemSelected(item)
         }
     }
-
     private fun changeTitleNote() {
         val editText = EditText(context).apply {
             setText(vm.title.value)
         }
 
+        val space1 = TextView(context).apply { text = SPACE }
+        val linearLayout = LinearLayout(context)
+        editText.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+            gravity = Gravity.CENTER
+            width = WIDTH_TEXT_VIEW
+        }
+        linearLayout.addView(space1)
+        linearLayout.addView(editText)
+
         val alert = AlertDialog.Builder(requireActivity())
-            .setView(editText)
+            .setView(linearLayout)
             .setCancelable(false)
             .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
                 vm.onTitleChanged(editText.text.toString())
                 dialog.dismiss()
-            }
-            .create()
+            }.create()
 
         alert.setTitle(getString(R.string.change_title))
         alert.show()
@@ -166,5 +188,13 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
     override fun onPause() {
         super.onPause()
         vm.onNoteSave(getString(R.string.note))
+    }
+
+    companion object {
+        const val WIDTH_TEXT_VIEW = 700
+        const val SPACE = "     "
+        const val NULL_POSITION = 0F
+        const val START_COLOR_POSITION_MIN = -200F
+        const val START_COLOR_POSITION_PLS = 200F
     }
 }
