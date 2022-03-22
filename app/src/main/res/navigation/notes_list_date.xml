@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/note_date_list_fragment"
+    android:id="@+id/notes_list_date">
+
+    <fragment
+        android:id="@+id/note_date_list_fragment"
+        android:name="com.github.freenote.ui.notelistdate.NoteDateListFragment"
+        android:label="fragment_note_date_list"
+        tools:layout="@layout/fragment_note_date_list" />
+
+</navigation>
