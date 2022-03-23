@@ -87,7 +87,7 @@ class NoteViewModel (
             title = title.value ?: defaultTitle,
             text = text.value.orEmpty(),
             date = date ?: System.currentTimeMillis(),
-            color = color.value ?: NotesColor.DEFAULT,
+            color = color.value ?: NotesColor.COLOR_1,
             number = "0"
         )
     }

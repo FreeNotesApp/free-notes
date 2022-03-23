@@ -7,13 +7,15 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.github.freenote.R
+import com.github.freenote.ThemeColor
 import com.github.freenote.databinding.FragmentSettingsBinding
 import com.github.freenote.domain.NoteDbEntity
+import com.github.freenote.ui.base.BaseFragment
 import com.github.freenote.ui.base.ScreenState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class SettingsFragment : Fragment(R.layout.fragment_settings) {
+class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
 
     private val binding: FragmentSettingsBinding by viewBinding(FragmentSettingsBinding::bind)
     private val vm: SettingsViewModel by viewModel()
@@ -23,6 +25,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
         initObservers()
         initTheme()
+        setToolbarTitle(R.string.settings_title)
     }
 
     private fun initObservers() {
@@ -32,21 +35,24 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     }
 
     private fun initTheme() {
-        binding.redThemeRadioButton.setOnClickListener{
+        binding.whileThemeRadioButton.setOnClickListener{
             setAppTheme(R.style.Theme_FreeNote)
+            ThemeColor.themeColor = R.style.Theme_FreeNote
         }
-        binding.blackThemeRadioButton.setOnClickListener{
-            setAppTheme(R.style.Theme_FreeNote_Gray)
+        binding.dartALittleThemeRadioButton.setOnClickListener{
+            setAppTheme(R.style.Theme_FreeNote_Dark_A_Little)
+            ThemeColor.themeColor = R.style.Theme_FreeNote_Dark_A_Little
         }
-        binding.greenThemeRadioButton.setOnClickListener{
-            setAppTheme(R.style.Theme_FreeNote_Brown)
+        binding.darkThemeRadioButton.setOnClickListener{
+            setAppTheme(R.style.Theme_FreeNote_Dark)
+            ThemeColor.themeColor = R.style.Theme_FreeNote_Dark
         }
     }
 
     private fun setAppTheme(code: Int) {
-        val sharedPreferences: SharedPreferences? =
-            activity?.getSharedPreferences(NAME_THEME, Context.MODE_PRIVATE)
-        sharedPreferences?.edit()?.putInt(APP_THEME, code)?.apply()
+        val sharedPreferences: SharedPreferences =
+            requireActivity().getSharedPreferences(NAME_THEME, Context.MODE_PRIVATE)
+        sharedPreferences.edit().putInt(APP_THEME, code).apply()
         activity?.recreate()
     }
 

@@ -56,30 +56,6 @@ class MainActivity : AppCompatActivity(), BaseFragment.Contract {
         binding.bottomNavigationView.isVisible = isVisible
     }
 
-    private fun setBottomNavigation() {
-        binding.bottomNavigationView.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.bottom_view_note -> {
-                    navigateTo(R.id.notes_list_fragment)
-                    true
-                }
-                R.id.bottom_view_date_note -> {
-                    navigateTo(R.id.note_date_list_fragment)
-                    true
-                }
-                R.id.bottom_view_settings -> {
-                    navigateTo(R.id.settings_fragment)
-                    true
-                }
-                else -> false
-            }
-        }
-    }
-
-    private fun navigateTo(fragmentId: Int) {
-        findNavController(binding.fragmentContainerView.id).navigate(fragmentId)
-    }
-
     companion object {
         const val APP_THEME = "APP_THEME"
         const val NAME_THEME = "THEME"

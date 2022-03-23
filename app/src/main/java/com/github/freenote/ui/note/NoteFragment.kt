@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.graphics.Color
 import android.os.Bundle
 import android.view.*
 import android.widget.*
@@ -13,6 +14,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.github.freenote.R
+import com.github.freenote.ThemeColor
 import com.github.freenote.databinding.FragmentNoteBinding
 import com.github.freenote.domain.NoteDbEntity
 import com.github.freenote.ui.base.BaseFragment
@@ -37,7 +39,7 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
                 ObjectAnimator.ofFloat(colorNoteWhite, ANIMATION_TYPE, -ANIMATION_START_POSITION, ANIMATION_END_POSITION),
                 ObjectAnimator.ofFloat(colorNoteGreenLight, ANIMATION_TYPE, -ANIMATION_START_POSITION, ANIMATION_END_POSITION),
                 ObjectAnimator.ofFloat(colorNoteRedLight, ANIMATION_TYPE, ANIMATION_START_POSITION, ANIMATION_END_POSITION),
-                ObjectAnimator.ofFloat(colorNoteYellowLight, ANIMATION_TYPE, ANIMATION_START_POSITION, ANIMATION_END_POSITION),
+                ObjectAnimator.ofFloat(colorNoteYellowLight, ANIMATION_TYPE, ANIMATION_START_POSITION, ANIMATION_END_POSITION)
             )
         }
     }
@@ -48,7 +50,7 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
                 ObjectAnimator.ofFloat(colorNoteWhite, ANIMATION_TYPE, ANIMATION_END_POSITION, -ANIMATION_START_POSITION),
                 ObjectAnimator.ofFloat(colorNoteGreenLight, ANIMATION_TYPE, ANIMATION_END_POSITION, -ANIMATION_START_POSITION),
                 ObjectAnimator.ofFloat(colorNoteRedLight, ANIMATION_TYPE, ANIMATION_END_POSITION, ANIMATION_START_POSITION),
-                ObjectAnimator.ofFloat(colorNoteYellowLight, ANIMATION_TYPE, ANIMATION_END_POSITION, ANIMATION_START_POSITION),
+                ObjectAnimator.ofFloat(colorNoteYellowLight, ANIMATION_TYPE, ANIMATION_END_POSITION, ANIMATION_START_POSITION)
             )
         }
     }
@@ -68,6 +70,18 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
         setToolbarTitle(R.string.note)
         initListeners()
         initObservers()
+        initColorChange()
+    }
+
+    private fun initColorChange() = with(binding){
+        colorNoteWhite.setCardBackgroundColor(resources.getColor(converterColorNote(NotesColor.COLOR_1)))
+        colorNoteYellowLight.setCardBackgroundColor(resources.getColor(converterColorNote(NotesColor.COLOR_2)))
+        colorNoteGreenLight.setCardBackgroundColor(resources.getColor(converterColorNote(NotesColor.COLOR_3)))
+        colorNoteRedLight.setCardBackgroundColor(resources.getColor(converterColorNote(NotesColor.COLOR_4)))
+    }
+
+    private fun converterColorNote(notesColors: NotesColor): Int {
+        return getNoteColorId(notesColors)
     }
 
     private fun initListeners() {
@@ -76,42 +90,22 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
         }
 
         binding.colorNoteWhite.setOnClickListener {
-            vm.onColorChanged(NotesColor.DEFAULT)
-            vm.onChangeColorPanelState()
-        }
-
-        binding.colorNoteRedLight.setOnClickListener {
-            vm.onColorChanged(NotesColor.RED)
+            vm.onColorChanged(NotesColor.COLOR_1)
             vm.onChangeColorPanelState()
         }
 
         binding.colorNoteYellowLight.setOnClickListener {
-            vm.onColorChanged(NotesColor.YELLOW)
+            vm.onColorChanged(NotesColor.COLOR_2)
             vm.onChangeColorPanelState()
         }
 
         binding.colorNoteGreenLight.setOnClickListener {
-            vm.onColorChanged(NotesColor.GREEN)
+            vm.onColorChanged(NotesColor.COLOR_3)
             vm.onChangeColorPanelState()
         }
 
-        binding.colorNotePurple.setOnClickListener {
-            vm.onColorChanged(NotesColor.PURPLE)
-            vm.onChangeColorPanelState()
-        }
-
-        binding.colorNoteYellowBig.setOnClickListener {
-            vm.onColorChanged(NotesColor.YELLOW_BIG)
-            vm.onChangeColorPanelState()
-        }
-
-        binding.colorNoteGreenSwamp.setOnClickListener {
-            vm.onColorChanged(NotesColor.GREEN_SWAMP)
-            vm.onChangeColorPanelState()
-        }
-
-        binding.colorNoteBrown.setOnClickListener {
-            vm.onColorChanged(NotesColor.BROWN)
+        binding.colorNoteRedLight.setOnClickListener {
+            vm.onColorChanged(NotesColor.COLOR_4)
             vm.onChangeColorPanelState()
         }
     }
@@ -150,7 +144,7 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
                 addListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationStart(animation: Animator?, isReverse: Boolean) {
                         if (it) {
-                            binding.colorLinearSearch.isVisible = it
+                           binding.colorLinearSearch.isVisible = it
                         }
                     }
 
@@ -222,8 +216,5 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
     companion object {
         const val WIDTH_TEXT_VIEW = 700
         const val SPACE = "     "
-        const val NULL_POSITION = 0F
-        const val START_COLOR_POSITION_MIN = -200F
-        const val START_COLOR_POSITION_PLS = 200F
     }
 }

@@ -14,13 +14,14 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Theme.FreeNote.Gray" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Theme.FreeNote.Dark.A.Little" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/grey</item>
-        <item name="colorPrimaryVariant">@color/black</item>
+        <item name="colorPrimary">@color/brown</item>
+        <item name="colorPrimaryVariant">@color/brown</item>
+        <item name="android:windowBackground">@color/grey_light</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/grey</item>
+        <item name="colorSecondary">@color/brown</item>
         <item name="colorSecondaryVariant">@color/black</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
@@ -28,14 +29,15 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Theme.FreeNote.Brown" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Theme.FreeNote.Dark" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/brown</item>
-        <item name="colorPrimaryVariant">@color/brown</item>
+        <item name="colorPrimary">@color/gray_1</item>
+        <item name="colorPrimaryVariant">@color/gray_1</item>
+        <item name="android:windowBackground">@color/gray_2</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/brown</item>
-        <item name="colorSecondaryVariant">@color/brown</item>
+        <item name="colorSecondary">@color/gray_1</item>
+        <item name="colorSecondaryVariant">@color/gray_1</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
@@ -45,16 +47,16 @@
     <style name="TextRadioButton" parent="Theme.FreeNote">
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/main_margin</item>
-        <item name="android:padding">@dimen/margin_8dp</item>
+        <item name="android:padding">@dimen/main_margin_half</item>
         <item name="android:fontFamily">sans-serif-black</item>
     </style>
 
     <style name="TextTittle" parent="Theme.FreeNote">
         <item name="android:textColor">@color/red_red</item>
-        <item name="android:textSize">@dimen/text_tittle_24_sp</item>
-        <item name="android:paddingBottom">@dimen/margin_8dp</item>
-        <item name="android:paddingLeft">@dimen/margin_8dp</item>
-        <item name="android:paddingRight">@dimen/margin_8dp</item>
+        <item name="android:textSize">@dimen/text_title</item>
+        <item name="android:paddingBottom">@dimen/main_margin_half</item>
+        <item name="android:paddingLeft">@dimen/main_margin_half</item>
+        <item name="android:paddingRight">@dimen/main_margin_half</item>
         <item name="android:gravity">center</item>
         <item name="android:fontFamily">sans-serif-black</item>
     </style>
@@ -62,7 +64,7 @@
     <style name="TextText" parent="Theme.FreeNote">
         <item name="android:textColor">@color/red_red</item>
         <item name="android:textSize">@dimen/main_margin</item>
-        <item name="android:padding">@dimen/margin_8dp</item>
+        <item name="android:padding">@dimen/main_margin_half</item>
         <item name="android:fontFamily">sans-serif-black</item>
     </style>
 </resources>

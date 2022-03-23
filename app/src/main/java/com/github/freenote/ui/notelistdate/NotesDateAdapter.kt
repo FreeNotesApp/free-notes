@@ -31,10 +31,6 @@ class NotesDateAdapter(
         fun bind(note: NoteDbEntity, clickListener: (NoteDbEntity) -> Unit) {
             binding.itemNoteTvTitle.text = note.title
             binding.itemNoteTvText.text = note.text
-//            binding.root.setCardBackgroundColor(
-//                itemView.context.getColor(getNoteColorId(note.color))
-//            )
-
             binding.root.setOnClickListener {
                 clickListener(note)
             }

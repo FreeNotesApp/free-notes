@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_margin="@dimen/margin_8dp"
+    android:layout_margin="@dimen/main_margin_half"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.settings.SettingsFragment">
@@ -19,25 +19,25 @@
         android:layout_height="wrap_content" >
 
         <RadioButton
-            android:id="@+id/red_theme_radio_button"
+            android:id="@+id/while_theme_radio_button"
             style="@style/TextRadioButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Красная" />
+            android:text="Светлая" />
 
         <RadioButton
-            android:id="@+id/green_theme_radio_button"
+            android:id="@+id/dart_a_little_theme_radio_button"
             style="@style/TextRadioButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Коричневая" />
+            android:text="Чусть темнее" />
 
         <RadioButton
-            android:id="@+id/black_theme_radio_button"
+            android:id="@+id/dark_theme_radio_button"
             style="@style/TextRadioButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Серая" />
+            android:text="Темная" />
     </RadioGroup>
 
 </LinearLayout>
