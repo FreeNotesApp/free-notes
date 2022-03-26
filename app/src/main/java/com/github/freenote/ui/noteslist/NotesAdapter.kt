@@ -1,7 +1,10 @@
 package com.github.freenote.ui.noteslist
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +17,7 @@ import com.github.freenote.ui.utils.getNoteColorId
 class NotesAdapter(
     private val clickListener: (NoteDbEntity) -> Unit
 ) : ListAdapter<NoteDbEntity, NotesAdapter.NoteViewHolder>(NotesDiff()) {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         return NoteViewHolder(parent)
@@ -40,7 +44,7 @@ class NotesAdapter(
             binding.itemNoteTvTitle.text = note.title
             binding.itemNoteTvText.text = note.text
             binding.root.setCardBackgroundColor(
-                itemView.context.getColor(getNoteColorId(note.color))
+                itemView.context.getColor(getNoteColorId(note.color, itemView.context))
             )
             binding.root.setOnClickListener {
                 clickListener(note)

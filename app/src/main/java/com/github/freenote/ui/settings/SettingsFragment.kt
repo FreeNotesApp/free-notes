@@ -4,10 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.github.freenote.R
-import com.github.freenote.ThemeColor
 import com.github.freenote.databinding.FragmentSettingsBinding
 import com.github.freenote.domain.NoteDbEntity
 import com.github.freenote.ui.base.BaseFragment
@@ -37,15 +35,12 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
     private fun initTheme() {
         binding.whileThemeRadioButton.setOnClickListener{
             setAppTheme(R.style.Theme_FreeNote)
-            ThemeColor.themeColor = R.style.Theme_FreeNote
         }
-        binding.dartALittleThemeRadioButton.setOnClickListener{
+        binding.darkALittleThemeRadioButton.setOnClickListener{
             setAppTheme(R.style.Theme_FreeNote_Dark_A_Little)
-            ThemeColor.themeColor = R.style.Theme_FreeNote_Dark_A_Little
         }
         binding.darkThemeRadioButton.setOnClickListener{
             setAppTheme(R.style.Theme_FreeNote_Dark)
-            ThemeColor.themeColor = R.style.Theme_FreeNote_Dark
         }
     }
 
@@ -71,7 +66,7 @@ class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
     }
 
     companion object {
-        const val APP_THEME = "APP_THEME"
-        const val NAME_THEME = "THEME"
+        const val APP_THEME = "THEME_REFERENCES_KEY"
+        const val NAME_THEME = "CURRENT_THEME_KEY"
     }
 }

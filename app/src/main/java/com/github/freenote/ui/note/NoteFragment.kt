@@ -4,8 +4,8 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -14,7 +14,6 @@ import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.github.freenote.R
-import com.github.freenote.ThemeColor
 import com.github.freenote.databinding.FragmentNoteBinding
 import com.github.freenote.domain.NoteDbEntity
 import com.github.freenote.ui.base.BaseFragment
@@ -81,7 +80,7 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
     }
 
     private fun converterColorNote(notesColors: NotesColor): Int {
-        return getNoteColorId(notesColors)
+        return getNoteColorId(notesColors, requireContext())
     }
 
     private fun initListeners() {
@@ -120,7 +119,7 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
         vm.color.observe(viewLifecycleOwner) {
             binding.nameNoteTextInput.boxStrokeColor =
                 resources.getColor(
-                    getNoteColorId(it),
+                    getNoteColorId(it, requireContext()),
                     null
                 )
         }
@@ -191,7 +190,6 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
         val linearLayout = LinearLayout(context)
         editText.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
             gravity = Gravity.CENTER
-            width = WIDTH_TEXT_VIEW
         }
         linearLayout.addView(space)
         linearLayout.addView(editText)
@@ -214,7 +212,6 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
     }
 
     companion object {
-        const val WIDTH_TEXT_VIEW = 700
         const val SPACE = "     "
     }
 }

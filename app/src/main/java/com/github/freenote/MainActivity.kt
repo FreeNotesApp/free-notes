@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity(), BaseFragment.Contract {
     }
 
     companion object {
-        const val APP_THEME = "APP_THEME"
-        const val NAME_THEME = "THEME"
+        const val APP_THEME = "THEME_REFERENCES_KEY"
+        const val NAME_THEME = "CURRENT_THEME_KEY"
     }
 }

@@ -12,7 +12,7 @@
         style="@style/TextTittle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Темы" />
+        android:text="@string/them" />
 
     <RadioGroup
         android:layout_width="match_parent"
@@ -23,21 +23,21 @@
             style="@style/TextRadioButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Светлая" />
+            android:text="@string/light" />
 
         <RadioButton
-            android:id="@+id/dart_a_little_theme_radio_button"
+            android:id="@+id/dark_a_little_theme_radio_button"
             style="@style/TextRadioButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Чусть темнее" />
+            android:text="@string/little_darker" />
 
         <RadioButton
             android:id="@+id/dark_theme_radio_button"
             style="@style/TextRadioButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Темная" />
+            android:text="@string/dark" />
     </RadioGroup>
 
 </LinearLayout>

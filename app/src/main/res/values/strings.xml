@@ -9,4 +9,8 @@
     <string name="notes_list_dates_title">Напоминания</string>
     <string name="settings_title">Настройки</string>
     <string name="ok">Ок</string>
+    <string name="dark">Темная</string>
+    <string name="light">Светлая</string>
+    <string name="them">Темы</string>
+    <string name="little_darker">Чусть темнее</string>
 </resources>

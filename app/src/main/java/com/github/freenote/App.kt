@@ -15,7 +15,3 @@ class App : Application() {
         }
     }
 }
-
-object ThemeColor {
-    var themeColor = R.style.Theme_FreeNote
-}
