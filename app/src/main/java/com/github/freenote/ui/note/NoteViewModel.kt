@@ -36,8 +36,15 @@ class NoteViewModel (
     private val _colorPanelState = MutableLiveData(false)
     val colorPanelState: LiveData<Boolean> = _colorPanelState
 
+    private val _titlePanelState = MutableLiveData(false)
+    val titlePanelState: LiveData<Boolean> = _titlePanelState
+
     fun setNote(note: NoteDbEntity?) {
-        note?.let { setFields(it) }
+        note?.let {
+            if (uuid == null) {
+                setFields(it)
+            }
+        }
     }
 
     fun onTitleChanged(newTitle: String) {
@@ -88,7 +95,6 @@ class NoteViewModel (
             text = text.value.orEmpty(),
             date = date ?: System.currentTimeMillis(),
             color = color.value ?: NotesColor.DEFAULT,
-            number = "0"
         )
     }
 
@@ -112,5 +118,13 @@ class NoteViewModel (
 
     fun onNavigateBackFinished() {
         _navigateBackEvent.value = null
+    }
+
+    fun onChangeTitleClicked() {
+        _titlePanelState.value = true
+    }
+
+    fun onChangeTitleClosed() {
+        _titlePanelState.value = false
     }
 }

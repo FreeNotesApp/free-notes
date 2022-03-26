@@ -6,9 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.github.freenote.data.repository.NoteRepo
 import com.github.freenote.domain.NoteDbEntity
 
-class NotesListViewModel(
-    private val noteRepo: NoteRepo,
-) : ViewModel() {
+class NotesListViewModel(noteRepo: NoteRepo, ) : ViewModel() {
 
     val notes: LiveData<List<NoteDbEntity>> = noteRepo.getNotes()
 
@@ -17,6 +15,9 @@ class NotesListViewModel(
 
     private val _createNoteClickedEvent = MutableLiveData<Boolean?>()
     val createNoteClickedEvent: LiveData<Boolean?> = _createNoteClickedEvent
+
+    private val _settingsClickedEvent = MutableLiveData<Boolean?>()
+    val settingsClickedEvent: LiveData<Boolean?> = _settingsClickedEvent
 
     fun onNoteClicked(note: NoteDbEntity?) {
         _noteClickedEvent.value = note
@@ -32,5 +33,13 @@ class NotesListViewModel(
 
     fun onCreateNoteClickedFinished() {
         _createNoteClickedEvent.value = null
+    }
+
+    fun onSettingsClicked() {
+        _settingsClickedEvent.value = true
+    }
+
+    fun onSettingsClickedFinished() {
+        _settingsClickedEvent.value = null
     }
 }

@@ -33,15 +33,35 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
     private val binding: FragmentNoteBinding by viewBinding(FragmentNoteBinding::bind)
     private val vm: NoteViewModel by viewModel()
 
-    override val shownBottomNav: Boolean = false
+    private var alertDialog: AlertDialog? = null
 
     private val startAnimationsList by lazy {
         with(binding) {
             listOf(
-                ObjectAnimator.ofFloat(colorNoteWhite, ANIMATION_TYPE, -ANIMATION_START_POSITION, ANIMATION_END_POSITION),
-                ObjectAnimator.ofFloat(colorNoteGreenLight, ANIMATION_TYPE, -ANIMATION_START_POSITION, ANIMATION_END_POSITION),
-                ObjectAnimator.ofFloat(colorNoteRedLight, ANIMATION_TYPE, ANIMATION_START_POSITION, ANIMATION_END_POSITION),
-                ObjectAnimator.ofFloat(colorNoteYellowLight, ANIMATION_TYPE, ANIMATION_START_POSITION, ANIMATION_END_POSITION),
+                ObjectAnimator.ofFloat(
+                    colorNoteWhite,
+                    ANIMATION_TYPE,
+                    -ANIMATION_START_POSITION,
+                    ANIMATION_END_POSITION
+                ),
+                ObjectAnimator.ofFloat(
+                    colorNoteGreenLight,
+                    ANIMATION_TYPE,
+                    -ANIMATION_START_POSITION,
+                    ANIMATION_END_POSITION
+                ),
+                ObjectAnimator.ofFloat(
+                    colorNoteRedLight,
+                    ANIMATION_TYPE,
+                    ANIMATION_START_POSITION,
+                    ANIMATION_END_POSITION
+                ),
+                ObjectAnimator.ofFloat(
+                    colorNoteYellowLight,
+                    ANIMATION_TYPE,
+                    ANIMATION_START_POSITION,
+                    ANIMATION_END_POSITION
+                ),
             )
         }
     }
@@ -49,10 +69,30 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
     private val closeAnimationsList by lazy {
         with(binding) {
             listOf(
-                ObjectAnimator.ofFloat(colorNoteWhite, ANIMATION_TYPE, ANIMATION_END_POSITION, -ANIMATION_START_POSITION),
-                ObjectAnimator.ofFloat(colorNoteGreenLight, ANIMATION_TYPE, ANIMATION_END_POSITION, -ANIMATION_START_POSITION),
-                ObjectAnimator.ofFloat(colorNoteRedLight, ANIMATION_TYPE, ANIMATION_END_POSITION, ANIMATION_START_POSITION),
-                ObjectAnimator.ofFloat(colorNoteYellowLight, ANIMATION_TYPE, ANIMATION_END_POSITION, ANIMATION_START_POSITION),
+                ObjectAnimator.ofFloat(
+                    colorNoteWhite,
+                    ANIMATION_TYPE,
+                    ANIMATION_END_POSITION,
+                    -ANIMATION_START_POSITION
+                ),
+                ObjectAnimator.ofFloat(
+                    colorNoteGreenLight,
+                    ANIMATION_TYPE,
+                    ANIMATION_END_POSITION,
+                    -ANIMATION_START_POSITION
+                ),
+                ObjectAnimator.ofFloat(
+                    colorNoteRedLight,
+                    ANIMATION_TYPE,
+                    ANIMATION_END_POSITION,
+                    ANIMATION_START_POSITION
+                ),
+                ObjectAnimator.ofFloat(
+                    colorNoteYellowLight,
+                    ANIMATION_TYPE,
+                    ANIMATION_END_POSITION,
+                    ANIMATION_START_POSITION
+                ),
             )
         }
     }
@@ -147,6 +187,19 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
                 start()
             }
         }
+
+        vm.titlePanelState.observe(viewLifecycleOwner) { isShown ->
+            if (isShown) {
+                if (alertDialog == null) {
+                    changeTitleNote()
+                }
+            } else {
+                alertDialog?.let {
+                    it.dismiss()
+                    alertDialog = null
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -160,7 +213,7 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
             true
         }
         R.id.change_title_bottom_view_note -> {
-            changeTitleNote()
+            vm.onChangeTitleClicked()
             true
         }
         R.id.color_bottom_view_note -> {
@@ -175,23 +228,31 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
     private fun changeTitleNote() {
         val editText = EditText(context).apply {
             setText(vm.title.value)
+            doOnTextChanged { text, _, _, _ ->
+                vm.onTitleChanged(text.toString())
+            }
         }
 
-        val alert = AlertDialog.Builder(requireActivity())
+        alertDialog = AlertDialog.Builder(requireActivity())
             .setView(editText)
             .setCancelable(false)
             .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
-                vm.onTitleChanged(editText.text.toString())
-                dialog.dismiss()
+                vm.onChangeTitleClosed()
             }
             .create()
-
-        alert.setTitle(getString(R.string.change_title))
-        alert.show()
+            .apply {
+                setTitle(getString(R.string.change_title))
+                show()
+            }
     }
 
     override fun onPause() {
         super.onPause()
         vm.onNoteSave(getString(R.string.note))
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        alertDialog?.dismiss()
     }
 }
