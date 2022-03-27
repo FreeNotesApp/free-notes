@@ -13,8 +13,9 @@ import com.github.freenote.R
 import com.github.freenote.databinding.FragmentNotesListBinding
 import com.github.freenote.domain.NoteDbEntity
 import com.github.freenote.ui.base.BaseFragment
-import com.github.freenote.ui.note.NOTE_EXTRA_KEY
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
+const val NOTE_EXTRA_KEY = "note"
 
 class NotesListFragment : BaseFragment(R.layout.fragment_notes_list) {
 
