@@ -16,5 +16,4 @@ data class NoteDbEntity(
     @ColumnInfo(name = "text") var text: String,
     @ColumnInfo(name = "date") var date: Long,
     @ColumnInfo(name = "color") var color: NotesColor,
-    @ColumnInfo(name = "number") var number: String
 ) : Parcelable
