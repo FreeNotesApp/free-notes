@@ -5,8 +5,8 @@ import android.content.SharedPreferences
 import com.github.freenote.data.repository.AppTheme
 import com.github.freenote.data.repository.ThemesRepo
 
-private const val THEME_PREFS = "THEME_PREFS"
-private const val APP_THEME_KEY = "APP_THEME_KEY"
+const val THEME_PREFS = "THEME_PREFS"
+const val APP_THEME_KEY = "APP_THEME_KEY"
 
 class ThemesRepoImpl(
     private val context: Context

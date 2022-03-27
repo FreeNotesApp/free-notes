@@ -6,7 +6,6 @@ import com.github.freenote.data.repository.NoteRepo
 import com.github.freenote.data.repository.ThemesRepo
 import com.github.freenote.data.repository.impl.NoteImpl
 import com.github.freenote.data.repository.impl.ThemesRepoImpl
-import com.github.freenote.ui.MainViewModel
 import com.github.freenote.ui.note.NoteViewModel
 import com.github.freenote.ui.noteslist.NotesListViewModel
 import com.github.freenote.ui.settings.SettingsViewModel
@@ -24,5 +23,4 @@ val viewModelModule = module {
     viewModel { NotesListViewModel(get(), get()) }
     viewModel { NoteViewModel(get(), get()) }
     viewModel { SettingsViewModel(get()) }
-    viewModel { MainViewModel(get()) }
 }
