@@ -12,23 +12,18 @@ import com.github.freenote.ui.utils.NotesColor
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import com.github.freenote.data.repository.AppTheme
+import com.github.freenote.data.repository.ThemesRepo
 
-class SettingsViewModel (
-    private val noteRepo: NoteRepo,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+class SettingsViewModel(
+    private val themesRepo: ThemesRepo
 ) : ViewModel() {
 
-    private val _notes: MutableLiveData<ScreenState<NoteDbEntity>> = MutableLiveData(
-        ScreenState.Loading
-    )
-    val notes: LiveData<ScreenState<NoteDbEntity>> = _notes
+    private val _theme = MutableLiveData(themesRepo.getAppTheme())
+    val theme: LiveData<AppTheme> = _theme
 
-    private val _noteClickedEvent = MutableLiveData<NoteDbEntity?>()
-    val noteClickedEvent: LiveData<NoteDbEntity?> = _noteClickedEvent
-
-    init {
-        viewModelScope.launch(ioDispatcher) {
-            //_notes.postValue(ScreenState.Success(noteRepo.getNotes()))
-        }
+    fun onChangeTheme(theme: AppTheme) {
+        _theme.value = theme
+        themesRepo.setAppTheme(theme)
     }
 }

@@ -1,30 +1,28 @@
 package com.github.freenote.ui.noteslist
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.github.freenote.R
+import com.github.freenote.data.repository.AppTheme
 import com.github.freenote.databinding.ItemNoteBinding
 import com.github.freenote.domain.NoteDbEntity
 import com.github.freenote.ui.utils.getNoteColorId
 
 class NotesAdapter(
-    private val clickListener: (NoteDbEntity) -> Unit
+    private val clickListener: (NoteDbEntity) -> Unit,
+    private val theme: AppTheme
 ) : ListAdapter<NoteDbEntity, NotesAdapter.NoteViewHolder>(NotesDiff()) {
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         return NoteViewHolder(parent)
     }
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
-        holder.bind(getItem(position), clickListener)
+        holder.bind(getItem(position), clickListener, theme)
     }
 
     fun submitListWithScroll(list: List<NoteDbEntity>, commitCallback: Runnable?) {
@@ -40,11 +38,11 @@ class NotesAdapter(
     ) {
         private val binding: ItemNoteBinding by viewBinding(ItemNoteBinding::bind)
 
-        fun bind(note: NoteDbEntity, clickListener: (NoteDbEntity) -> Unit) {
+        fun bind(note: NoteDbEntity, clickListener: (NoteDbEntity) -> Unit, theme: AppTheme) {
             binding.itemNoteTvTitle.text = note.title
             binding.itemNoteTvText.text = note.text
             binding.root.setCardBackgroundColor(
-                itemView.context.getColor(getNoteColorId(note.color, itemView.context))
+                itemView.context.getColor(getNoteColorId(note.color, theme))
             )
             binding.root.setOnClickListener {
                 clickListener(note)
