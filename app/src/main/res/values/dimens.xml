@@ -5,4 +5,7 @@
     <dimen name="card_corner_radiusNote">4dp</dimen>
     <dimen name="elevation_note">4dp</dimen>
     <dimen name="radius_color_note">20dp</dimen>
+    <dimen name="text_title">24sp</dimen>
+    <dimen name="layout_width_card_color">300dp</dimen>
+    <dimen name="layout_height_card_color">60dp</dimen>
 </resources>

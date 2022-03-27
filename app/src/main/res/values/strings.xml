@@ -8,4 +8,8 @@
     <string name="notes_list_title">Заметки</string>
     <string name="settings_title">Настройки</string>
     <string name="ok">Ок</string>
+    <string name="light_theme">Светлая</string>
+    <string name="darker">Чусть темнее</string>
+    <string name="dark">Темная</string>
+    <string name="themes">Темы</string>
 </resources>

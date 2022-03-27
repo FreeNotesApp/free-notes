@@ -1,10 +1,15 @@
 package com.github.freenote.ui.note
 
+import android.widget.LinearLayout
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.freenote.data.repository.AppTheme
 import com.github.freenote.data.repository.NoteRepo
+import com.github.freenote.data.repository.ThemesRepo
 import com.github.freenote.domain.NoteDbEntity
 import com.github.freenote.ui.utils.NotesColor
 import kotlinx.coroutines.CoroutineDispatcher
@@ -14,6 +19,7 @@ import java.util.*
 
 class NoteViewModel (
     private val noteRepo: NoteRepo,
+    private val themesRepo: ThemesRepo,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
@@ -94,7 +100,7 @@ class NoteViewModel (
             title = title.value ?: defaultTitle,
             text = text.value.orEmpty(),
             date = date ?: System.currentTimeMillis(),
-            color = color.value ?: NotesColor.DEFAULT,
+            color = color.value ?: NotesColor.COLOR_1,
         )
     }
 
@@ -126,5 +132,9 @@ class NoteViewModel (
 
     fun onChangeTitleClosed() {
         _titlePanelState.value = false
+    }
+
+    fun getTheme(): AppTheme {
+        return themesRepo.getAppTheme()
     }
 }

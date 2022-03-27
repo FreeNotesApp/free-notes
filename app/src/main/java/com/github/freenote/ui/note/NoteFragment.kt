@@ -5,11 +5,8 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.widget.EditText
+import android.view.*
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
@@ -38,30 +35,10 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
     private val startAnimationsList by lazy {
         with(binding) {
             listOf(
-                ObjectAnimator.ofFloat(
-                    colorNoteWhite,
-                    ANIMATION_TYPE,
-                    -ANIMATION_START_POSITION,
-                    ANIMATION_END_POSITION
-                ),
-                ObjectAnimator.ofFloat(
-                    colorNoteGreenLight,
-                    ANIMATION_TYPE,
-                    -ANIMATION_START_POSITION,
-                    ANIMATION_END_POSITION
-                ),
-                ObjectAnimator.ofFloat(
-                    colorNoteRedLight,
-                    ANIMATION_TYPE,
-                    ANIMATION_START_POSITION,
-                    ANIMATION_END_POSITION
-                ),
-                ObjectAnimator.ofFloat(
-                    colorNoteYellowLight,
-                    ANIMATION_TYPE,
-                    ANIMATION_START_POSITION,
-                    ANIMATION_END_POSITION
-                ),
+                ObjectAnimator.ofFloat(colorNoteWhite, ANIMATION_TYPE, -ANIMATION_START_POSITION, ANIMATION_END_POSITION),
+                ObjectAnimator.ofFloat(colorNoteGreenLight, ANIMATION_TYPE, -ANIMATION_START_POSITION, ANIMATION_END_POSITION),
+                ObjectAnimator.ofFloat(colorNoteRedLight, ANIMATION_TYPE, ANIMATION_START_POSITION, ANIMATION_END_POSITION),
+                ObjectAnimator.ofFloat(colorNoteYellowLight, ANIMATION_TYPE, ANIMATION_START_POSITION, ANIMATION_END_POSITION)
             )
         }
     }
@@ -69,30 +46,10 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
     private val closeAnimationsList by lazy {
         with(binding) {
             listOf(
-                ObjectAnimator.ofFloat(
-                    colorNoteWhite,
-                    ANIMATION_TYPE,
-                    ANIMATION_END_POSITION,
-                    -ANIMATION_START_POSITION
-                ),
-                ObjectAnimator.ofFloat(
-                    colorNoteGreenLight,
-                    ANIMATION_TYPE,
-                    ANIMATION_END_POSITION,
-                    -ANIMATION_START_POSITION
-                ),
-                ObjectAnimator.ofFloat(
-                    colorNoteRedLight,
-                    ANIMATION_TYPE,
-                    ANIMATION_END_POSITION,
-                    ANIMATION_START_POSITION
-                ),
-                ObjectAnimator.ofFloat(
-                    colorNoteYellowLight,
-                    ANIMATION_TYPE,
-                    ANIMATION_END_POSITION,
-                    ANIMATION_START_POSITION
-                ),
+                ObjectAnimator.ofFloat(colorNoteWhite, ANIMATION_TYPE, ANIMATION_END_POSITION, -ANIMATION_START_POSITION),
+                ObjectAnimator.ofFloat(colorNoteGreenLight, ANIMATION_TYPE, ANIMATION_END_POSITION, -ANIMATION_START_POSITION),
+                ObjectAnimator.ofFloat(colorNoteRedLight, ANIMATION_TYPE, ANIMATION_END_POSITION, ANIMATION_START_POSITION),
+                ObjectAnimator.ofFloat(colorNoteYellowLight, ANIMATION_TYPE, ANIMATION_END_POSITION, ANIMATION_START_POSITION)
             )
         }
     }
@@ -112,6 +69,14 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
         setToolbarTitle(R.string.note)
         initListeners()
         initObservers()
+        initColorChange()
+    }
+
+    private fun initColorChange() = with(binding){
+        colorNoteWhite.setCardBackgroundColor(resources.getColor(getNoteColorId(NotesColor.COLOR_1, vm.getTheme()), null))
+        colorNoteYellowLight.setCardBackgroundColor(resources.getColor(getNoteColorId(NotesColor.COLOR_2, vm.getTheme()), null))
+        colorNoteGreenLight.setCardBackgroundColor(resources.getColor(getNoteColorId(NotesColor.COLOR_3, vm.getTheme()), null))
+        colorNoteRedLight.setCardBackgroundColor(resources.getColor(getNoteColorId(NotesColor.COLOR_4, vm.getTheme()), null))
     }
 
     private fun initListeners() {
@@ -120,22 +85,22 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
         }
 
         binding.colorNoteWhite.setOnClickListener {
-            vm.onColorChanged(NotesColor.DEFAULT)
-            vm.onChangeColorPanelState()
-        }
-
-        binding.colorNoteRedLight.setOnClickListener {
-            vm.onColorChanged(NotesColor.RED)
+            vm.onColorChanged(NotesColor.COLOR_1)
             vm.onChangeColorPanelState()
         }
 
         binding.colorNoteYellowLight.setOnClickListener {
-            vm.onColorChanged(NotesColor.YELLOW)
+            vm.onColorChanged(NotesColor.COLOR_2)
             vm.onChangeColorPanelState()
         }
 
         binding.colorNoteGreenLight.setOnClickListener {
-            vm.onColorChanged(NotesColor.GREEN)
+            vm.onColorChanged(NotesColor.COLOR_3)
+            vm.onChangeColorPanelState()
+        }
+
+        binding.colorNoteRedLight.setOnClickListener {
+            vm.onColorChanged(NotesColor.COLOR_4)
             vm.onChangeColorPanelState()
         }
     }
@@ -150,7 +115,7 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
         vm.color.observe(viewLifecycleOwner) {
             binding.nameNoteTextInput.boxStrokeColor =
                 resources.getColor(
-                    getNoteColorId(it),
+                    getNoteColorId(it, vm.getTheme()),
                     null
                 )
         }

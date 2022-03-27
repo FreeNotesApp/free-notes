@@ -3,10 +3,15 @@ package com.github.freenote.ui.noteslist
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.github.freenote.data.repository.AppTheme
 import com.github.freenote.data.repository.NoteRepo
+import com.github.freenote.data.repository.ThemesRepo
 import com.github.freenote.domain.NoteDbEntity
 
-class NotesListViewModel(noteRepo: NoteRepo, ) : ViewModel() {
+class NotesListViewModel(
+    noteRepo: NoteRepo,
+    private val themesRepo: ThemesRepo
+) : ViewModel() {
 
     val notes: LiveData<List<NoteDbEntity>> = noteRepo.getNotes()
 
@@ -41,5 +46,9 @@ class NotesListViewModel(noteRepo: NoteRepo, ) : ViewModel() {
 
     fun onSettingsClickedFinished() {
         _settingsClickedEvent.value = null
+    }
+
+    fun getTheme(): AppTheme {
+        return themesRepo.getAppTheme()
     }
 }
