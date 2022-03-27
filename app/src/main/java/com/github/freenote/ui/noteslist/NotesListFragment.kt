@@ -26,7 +26,7 @@ class NotesListFragment : BaseFragment(R.layout.fragment_notes_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = NotesAdapter(vm::onNoteClicked)
+        adapter = NotesAdapter(vm::onNoteClicked, vm.getTheme())
         binding.fragNotesListRvNotes.adapter = adapter
 
         binding.fragNotesListFabAdd.setOnClickListener {

@@ -1,18 +1,15 @@
 package com.github.freenote.ui.settings
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.github.freenote.R
-import com.github.freenote.ThemeColor
+import com.github.freenote.data.repository.AppTheme
 import com.github.freenote.databinding.FragmentSettingsBinding
+import com.github.freenote.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
-class SettingsFragment : Fragment(R.layout.fragment_settings) {
+class SettingsFragment : BaseFragment(R.layout.fragment_settings) {
 
     private val binding: FragmentSettingsBinding by viewBinding(FragmentSettingsBinding::bind)
     private val vm: SettingsViewModel by viewModel()
@@ -20,34 +17,36 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initTheme()
+        initListeners()
+        initObservers()
         setToolbarTitle(R.string.settings_title)
     }
 
-    private fun initTheme() {
-        binding.whileThemeRadioButton.setOnClickListener{
-            setAppTheme(R.style.Theme_FreeNote)
-            ThemeColor.themeColor = R.style.Theme_FreeNote
+    private fun initListeners() {
+        binding.lightThemeRadioButton.setOnClickListener {
+            vm.onChangeTheme(AppTheme.LIGHT)
+            requireActivity().recreate()
         }
-        binding.dartALittleThemeRadioButton.setOnClickListener{
-            setAppTheme(R.style.Theme_FreeNote_Dark_A_Little)
-            ThemeColor.themeColor = R.style.Theme_FreeNote_Dark_A_Little
+        binding.darkerThemeRadioButton.setOnClickListener {
+            vm.onChangeTheme(AppTheme.DARKER)
+            requireActivity().recreate()
         }
-        binding.darkThemeRadioButton.setOnClickListener{
-            setAppTheme(R.style.Theme_FreeNote_Dark)
-            ThemeColor.themeColor = R.style.Theme_FreeNote_Dark
+        binding.darkThemeRadioButton.setOnClickListener {
+            vm.onChangeTheme(AppTheme.DARK)
+            requireActivity().recreate()
         }
     }
 
-    private fun setAppTheme(code: Int) {
-        val sharedPreferences: SharedPreferences =
-            requireActivity().getSharedPreferences(NAME_THEME, Context.MODE_PRIVATE)
-        sharedPreferences.edit().putInt(APP_THEME, code).apply()
-        activity?.recreate()
-    }
-
-    companion object {
-        const val APP_THEME = "APP_THEME"
-        const val NAME_THEME = "THEME"
+    private fun initObservers() {
+        vm.theme.observe(viewLifecycleOwner) {
+            binding.themeRadioGroup.check(
+                when (it) {
+                    AppTheme.LIGHT -> binding.lightThemeRadioButton.id
+                    AppTheme.DARKER -> binding.darkerThemeRadioButton.id
+                    AppTheme.DARK -> binding.darkThemeRadioButton.id
+                    else -> binding.lightThemeRadioButton.id
+                }
+            )
+        }
     }
 }

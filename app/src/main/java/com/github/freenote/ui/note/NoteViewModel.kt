@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.freenote.data.repository.AppTheme
 import com.github.freenote.data.repository.NoteRepo
+import com.github.freenote.data.repository.ThemesRepo
 import com.github.freenote.domain.NoteDbEntity
 import com.github.freenote.ui.utils.NotesColor
 import kotlinx.coroutines.CoroutineDispatcher
@@ -14,6 +16,7 @@ import java.util.*
 
 class NoteViewModel (
     private val noteRepo: NoteRepo,
+    private val themesRepo: ThemesRepo,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
@@ -126,5 +129,9 @@ class NoteViewModel (
 
     fun onChangeTitleClosed() {
         _titlePanelState.value = false
+    }
+
+    fun getTheme(): AppTheme {
+        return themesRepo.getAppTheme()
     }
 }

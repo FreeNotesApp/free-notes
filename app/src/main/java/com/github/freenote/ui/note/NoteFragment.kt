@@ -4,7 +4,6 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.graphics.Color
 import android.os.Bundle
 import android.view.*
 import android.widget.*
@@ -14,7 +13,6 @@ import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.github.freenote.R
-import com.github.freenote.ThemeColor
 import com.github.freenote.databinding.FragmentNoteBinding
 import com.github.freenote.domain.NoteDbEntity
 import com.github.freenote.ui.base.BaseFragment
@@ -75,14 +73,10 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
     }
 
     private fun initColorChange() = with(binding){
-        colorNoteWhite.setCardBackgroundColor(resources.getColor(converterColorNote(NotesColor.COLOR_1)))
-        colorNoteYellowLight.setCardBackgroundColor(resources.getColor(converterColorNote(NotesColor.COLOR_2)))
-        colorNoteGreenLight.setCardBackgroundColor(resources.getColor(converterColorNote(NotesColor.COLOR_3)))
-        colorNoteRedLight.setCardBackgroundColor(resources.getColor(converterColorNote(NotesColor.COLOR_4)))
-    }
-
-    private fun converterColorNote(notesColors: NotesColor): Int {
-        return getNoteColorId(notesColors)
+        colorNoteWhite.setCardBackgroundColor(resources.getColor(getNoteColorId(NotesColor.COLOR_1, vm.getTheme()), null))
+        colorNoteYellowLight.setCardBackgroundColor(resources.getColor(getNoteColorId(NotesColor.COLOR_2, vm.getTheme()), null))
+        colorNoteGreenLight.setCardBackgroundColor(resources.getColor(getNoteColorId(NotesColor.COLOR_3, vm.getTheme()), null))
+        colorNoteRedLight.setCardBackgroundColor(resources.getColor(getNoteColorId(NotesColor.COLOR_4, vm.getTheme()), null))
     }
 
     private fun initListeners() {
@@ -121,7 +115,7 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
         vm.color.observe(viewLifecycleOwner) {
             binding.nameNoteTextInput.boxStrokeColor =
                 resources.getColor(
-                    getNoteColorId(it),
+                    getNoteColorId(it, vm.getTheme()),
                     null
                 )
         }
@@ -203,14 +197,6 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
                 vm.onTitleChanged(text.toString())
             }
         }
-
-        /*val linearLayout = LinearLayout(context)
-        editText.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
-            gravity = Gravity.CENTER
-            width = WIDTH_TEXT_VIEW
-        }
-        linearLayout.addView(space)
-        linearLayout.addView(editText)*/
 
         alertDialog = AlertDialog.Builder(requireActivity())
             .setView(editText)
