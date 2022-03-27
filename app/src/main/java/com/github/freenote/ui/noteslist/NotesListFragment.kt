@@ -1,6 +1,9 @@
 package com.github.freenote.ui.noteslist
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
@@ -34,6 +37,11 @@ class NotesListFragment : BaseFragment(R.layout.fragment_notes_list) {
         initObservers()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     private fun initObservers() {
         vm.noteClickedEvent.observe(viewLifecycleOwner) {
             if (it != null) {
@@ -54,6 +62,28 @@ class NotesListFragment : BaseFragment(R.layout.fragment_notes_list) {
                 navigateToNote(null)
                 vm.onCreateNoteClickedFinished()
             }
+        }
+
+        vm.settingsClickedEvent.observe(viewLifecycleOwner) {
+            if (it != null) {
+                findNavController().navigate(R.id.settings_fragment)
+                vm.onSettingsClickedFinished()
+            }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_settings, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.settings -> {
+            vm.onSettingsClicked()
+            true
+        }
+        else -> {
+            super.onOptionsItemSelected(item)
         }
     }
 

@@ -28,10 +28,11 @@ private const val ANIMATION_END_POSITION = 0f
 private const val ANIMATION_TYPE = "translationY"
 
 class NoteFragment : BaseFragment(R.layout.fragment_note) {
+
     private val binding: FragmentNoteBinding by viewBinding(FragmentNoteBinding::bind)
     private val vm: NoteViewModel by viewModel()
 
-    override val shownBottomNav: Boolean = false
+    private var alertDialog: AlertDialog? = null
 
     private val startAnimationsList by lazy {
         with(binding) {
@@ -144,7 +145,7 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
                 addListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationStart(animation: Animator?, isReverse: Boolean) {
                         if (it) {
-                           binding.colorLinearSearch.isVisible = it
+                            binding.colorLinearSearch.isVisible = it
                         }
                     }
 
@@ -155,6 +156,19 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
                     }
                 })
                 start()
+            }
+        }
+
+        vm.titlePanelState.observe(viewLifecycleOwner) { isShown ->
+            if (isShown) {
+                if (alertDialog == null) {
+                    changeTitleNote()
+                }
+            } else {
+                alertDialog?.let {
+                    it.dismiss()
+                    alertDialog = null
+                }
             }
         }
     }
@@ -170,7 +184,7 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
             true
         }
         R.id.change_title_bottom_view_note -> {
-            changeTitleNote()
+            vm.onChangeTitleClicked()
             true
         }
         R.id.color_bottom_view_note -> {
@@ -185,27 +199,30 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
     private fun changeTitleNote() {
         val editText = EditText(context).apply {
             setText(vm.title.value)
+            doOnTextChanged { text, _, _, _ ->
+                vm.onTitleChanged(text.toString())
+            }
         }
 
-        val space = TextView(context).apply { text = SPACE }
-        val linearLayout = LinearLayout(context)
+        /*val linearLayout = LinearLayout(context)
         editText.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
             gravity = Gravity.CENTER
             width = WIDTH_TEXT_VIEW
         }
         linearLayout.addView(space)
-        linearLayout.addView(editText)
+        linearLayout.addView(editText)*/
 
-        val alert = AlertDialog.Builder(requireActivity())
-            .setView(linearLayout)
+        alertDialog = AlertDialog.Builder(requireActivity())
+            .setView(editText)
             .setCancelable(false)
             .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
-                vm.onTitleChanged(editText.text.toString())
-                dialog.dismiss()
-            }.create()
-
-        alert.setTitle(getString(R.string.change_title))
-        alert.show()
+                vm.onChangeTitleClosed()
+            }
+            .create()
+            .apply {
+                setTitle(getString(R.string.change_title))
+                show()
+            }
     }
 
     override fun onPause() {
@@ -213,8 +230,8 @@ class NoteFragment : BaseFragment(R.layout.fragment_note) {
         vm.onNoteSave(getString(R.string.note))
     }
 
-    companion object {
-        const val WIDTH_TEXT_VIEW = 700
-        const val SPACE = "     "
+    override fun onDestroyView() {
+        super.onDestroyView()
+        alertDialog?.dismiss()
     }
 }
